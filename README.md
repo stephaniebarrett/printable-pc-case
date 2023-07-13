@@ -13,6 +13,10 @@ Most of these modules approximate the physical dimensions of various PC componen
 ### mainboard.scad
 - ATX and Micro ATX
 ### psu.scad
+- ATX
 ### hdd.scad
+- 3.5"
 ### fan.scad
+- 80mm and 120mm
 ### rack.scad
+- 19"
