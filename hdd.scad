@@ -22,7 +22,7 @@ HDD_35_SIDE_MOUNT_HOLES = [
 
 HDD_MOUNT_HOLE_DIAMETER = INCH_TO_MM(0.138);
 
-module draw_hdd_35(center=false)
+module draw_hdd_35(useLabels, center=false)
 {
     offset = center ? -HDD_35_DIMS/2 : [0,0,0];
     difference()
@@ -30,7 +30,10 @@ module draw_hdd_35(center=false)
         cube(HDD_35_DIMS, center);
         translate(offset) draw_hdd_35_bottom_mounting_holes();
         translate(offset) draw_hdd_35_side_mounting_holes();
-        translate(offset) draw_hdd_label("HDD", HDD_35_DIMS);
+        if (useLabels)
+        {
+            translate(offset) draw_hdd_label("HDD", HDD_35_DIMS);
+        }
     }
 }
 

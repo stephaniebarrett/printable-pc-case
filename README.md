@@ -4,10 +4,15 @@ Currently, creating various [OpenScad](https://openscad.org/) modules to facilit
 
 Inspired by https://www.printables.com/model/485778-mini-itx-server-rackmount-2u
 
-Requires the [Alpha](https://github.com/thestumbler/alpha) OpenScad library for text rendering.
+Requires the following OpenScad libraries:
+- [Alpha](https://github.com/thestumbler/alpha) for text rendering.
+- [Honeycomb](https://www.printables.com/model/263718-honeycomb-library-openscad) for generating honeycombs.
 
 ## Modules
 Most of these modules approximate the physical dimensions of various PC components. These are used to estimate positions and clearances of all the parts.
 ### mainboard.scad
 - ATX and Micro ATX
 ### psu.scad
+### hdd.scad
+### fan.scad
+### rack.scad

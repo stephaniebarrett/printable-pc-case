@@ -35,30 +35,33 @@ module mb_demo()
     mainboard_mATX(true);
 }
 
-module draw_ATX_mainboard(center=false)
+module draw_ATX_mainboard(useLabels, center=false)
 {
     offset = center ? [-ATX_MB_DIMS[0]/2, -ATX_MB_DIMS[1]/2, 0] : [0, 0, 0];
-    draw_mainboard(offset, ATX_MB_DIMS, ATX_HOLES, ATX_string, 0);
+    draw_mainboard(useLabels, offset, ATX_MB_DIMS, ATX_HOLES, ATX_string, 0);
 }
 
-module draw_mATX_mainboard(center=false)
+module draw_mATX_mainboard(useLabels, center=false)
 {
     xOffset = ATX_MB_DIMS[0] - mATX_MB_DIMS[0];
     offset = center ? [-mATX_MB_DIMS[0]/2, -mATX_MB_DIMS[1]/2, 0] : [0, 0, 0];
-    draw_mainboard(offset, mATX_MB_DIMS, mATX_HOLES, mATX_string, xOffset);
+    draw_mainboard(useLabels, offset, mATX_MB_DIMS, mATX_HOLES, mATX_string, xOffset);
 }
 
 function get_ATX_mainboard_dims() = ATX_MB_DIMS;
 function get_mATX_mainboard_dims() = mATX_MB_DIMS;
 
-module draw_mainboard(offset, dims, holes, label, xOffset=0)
+module draw_mainboard(useLabels, offset, dims, holes, label, xOffset=0)
 {
     translate(offset) difference()
     {
         cube(dims);
         draw_mainboard_mounting_holes (dims, holes, xOffset);
-        draw_boardType_label(label);
-        draw_rearIO_label();
+        if (useLabels)
+        {
+            draw_boardType_label(label);
+            draw_rearIO_label();
+        }
         draw_rearIO_inset(xOffset);
     }
 }
