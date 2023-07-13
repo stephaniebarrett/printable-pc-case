@@ -9,12 +9,12 @@ ATX_PSU_MOUNTING_HOLES = [
     [6+138, 6+74]
 ];
 
-module psuDemo()
+module psu_demo()
 {
-    draw_atx_psu();
+    draw_ATX_psu();
 }
 
-module draw_atx_psu(center=false)
+module draw_ATX_psu(center=false)
 {
     translateToCenter = [-ATX_PSU_DIMS[0]/2, -ATX_PSU_DIMS[1]/2, -ATX_PSU_DIMS[2]/2];
     offset = center ? [0, 0, 0] : -translateToCenter;
@@ -26,6 +26,8 @@ module draw_atx_psu(center=false)
     }
     
 }
+
+function get_ATX_psu_dims() = ATX_PSU_DIMS;
 
 module draw_psu_mounting_holes(holeLocations)
 {

@@ -1,7 +1,5 @@
-
 include <Text/alpha.scad>
-
-function INCH_TO_MM(inch) = inch * 25.4;
+include <utility.scad>
 
 // ATX board dimensions
 ATX_MB_DIMS = [305, 244, INCH_TO_MM(.062)];
@@ -27,8 +25,8 @@ ATX_HOLES = [0, 2, 3, 4, 5, 6, 7, 8, 9];
 mATX_HOLES = [1, 2, 3, 5, 6, 8, 9];
 
 rearIO_string = "REAR IO";
-ATX_string = "ATX";
-mATX_string = "mATX";
+ATX_string = "ATX MAINBOARD";
+mATX_string = "MICRO ATX MAINBOARD";
 
 // demo
 module mb_demo()
@@ -37,18 +35,21 @@ module mb_demo()
     mainboard_mATX(true);
 }
 
-module mainboard_ATX(center=false)
+module draw_ATX_mainboard(center=false)
 {
     offset = center ? [-ATX_MB_DIMS[0]/2, -ATX_MB_DIMS[1]/2, 0] : [0, 0, 0];
     draw_mainboard(offset, ATX_MB_DIMS, ATX_HOLES, ATX_string, 0);
 }
 
-module mainboard_mATX(center=false)
+module draw_mATX_mainboard(center=false)
 {
     xOffset = ATX_MB_DIMS[0] - mATX_MB_DIMS[0];
     offset = center ? [-mATX_MB_DIMS[0]/2, -mATX_MB_DIMS[1]/2, 0] : [0, 0, 0];
     draw_mainboard(offset, mATX_MB_DIMS, mATX_HOLES, mATX_string, xOffset);
 }
+
+function get_ATX_mainboard_dims() = ATX_MB_DIMS;
+function get_mATX_mainboard_dims() = mATX_MB_DIMS;
 
 module draw_mainboard(offset, dims, holes, label, xOffset=0)
 {
