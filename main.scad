@@ -1,6 +1,6 @@
 // 3rd Party
-include <Text/alpha.scad>
-include <honeycomb.scad>
+include <externals/alpha/alpha.scad>
+include <externals/honeycomb/honeycomb.scad>
 
 // Helpers
 include <utility.scad>
