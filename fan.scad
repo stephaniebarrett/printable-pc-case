@@ -1,4 +1,4 @@
-FAN_MOUNTING_HOLE_DIAMETER = 4.3;
+include <global.scad>
 
 // TODO: support other fan sizes and depths
 function get_fan_spacing(size) =
