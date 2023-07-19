@@ -5,7 +5,6 @@ Currently, creating various [OpenScad](https://openscad.org/) modules to facilit
 Inspired by https://www.printables.com/model/485778-mini-itx-server-rackmount-2u
 
 Requires the following OpenScad libraries, already included:
-- [Alpha](https://github.com/thestumbler/alpha) for text rendering.
 - [Honeycomb](https://www.printables.com/model/263718-honeycomb-library-openscad) for generating honeycombs.
 - [nutsnbolts](https://github.com/JohK/nutsnbolts) for fasteners.
 
