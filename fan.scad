@@ -4,9 +4,20 @@ include <global.scad>
 function get_fan_spacing(size) =
     (size == 120) ?
         105 :
-        (size == 80) ?
-            71.5 :
-            0;
+    (size == 92) ?
+        82.5 :
+    (size == 80) ?
+        71.5 :
+    (size == 70) ?
+        60 :
+    (size == 60) ?
+        50 :
+    (size == 50) ?
+        40 :
+    (size == 40) ?
+        32 :
+    0;
+             
 
 module draw_fan(diameter, size, depth)
 {
