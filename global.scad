@@ -112,3 +112,12 @@ COMPONENT_GAP = 15;
 
 MB_POSITION = [RACK_WALL_THICKNESS + COMPONENT_GAP, 400 - mATX_MB_DIMS[1] - RACK_WALL_THICKNESS, RACK_FLOOR_THICKNESS + MB_STANDOFF_HEIGHT + MB_OFFSET_Z];
 PSU_POSITION = [RACK_OUTER_DIMS[0] - ATX_PSU_DIMS[0] - RACK_WALL_THICKNESS - COMPONENT_GAP, RACK_OUTER_DIMS[1] - ATX_PSU_DIMS[1] - RACK_WALL_THICKNESS, RACK_FLOOR_THICKNESS*2];
+
+// through holes
+THcld  = 0.3;  // dia clearance for the bolt
+THhcld = 1.0;  // dia clearances for the head
+// nutcatch parallel
+NPclh = 0.1;  // nut height clearance
+// nutcatch sidecut
+NSclh = 0.2;  // height clearance
+NSclsl = 0.2;  // slot width clearance

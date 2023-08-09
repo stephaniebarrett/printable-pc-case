@@ -48,8 +48,8 @@ module draw_hdd_35_cage_shelves()
             difference()
             {
                 translate([x, 0, 0]) cube(HDD_CAGE_PILLAR_DIMS);
-                translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, -RACK_FLOOR_THICKNESS]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=0.3, $fn=32);
-                translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, 20 + M3x10HeadHeight - RACK_FLOOR_THICKNESS]) rotate([0, 0, 90]) nutcatch_sidecut("M3", clh=0.2, clsl=0.2);
+                translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, -RACK_FLOOR_THICKNESS]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
+                translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, 20 + M3x10HeadHeight - RACK_FLOOR_THICKNESS]) rotate([0, 0, 90]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
             }
         }
         
@@ -76,8 +76,8 @@ module draw_riser_connecting_bolts()
     for (i = [0 : 1])
     {
         x = ((i + 0.5) * HDD_CAGE_PILLAR_DIMS[0]) + (i * HDD_CAGE_SHELF_DIMS[0]);
-        translate([x, y, z]) rotate([-90, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, $fn=32);
-        translate([x, y - 20 - M3x10HeadHeight, z]) rotate([90, -90, 0]) nutcatch_sidecut("M3");
+        translate([x, y, z]) rotate([-90, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
+        translate([x, y - 20 - M3x10HeadHeight, z]) rotate([90, -90, 0]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
     }
 }
 
