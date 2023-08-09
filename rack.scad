@@ -5,15 +5,37 @@ use <fan.scad>
 use <hdd.scad>
 use <psu.scad>
 
-// DRAW MAINBOARD
+// DRAW MAINBOARD GHOST
 //#translate(MB_POSITION) color(c=[.5,0,0,.5]) draw_mATX_mainboard();
 
-// DRAW PSU
+// DRAW PSU GHOST
 //#translate(PSU_POSITION) color(c=[.5,0,0,.5]) draw_ATX_psu();
 
-draw_left_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE,FAN_DEPTH);
-draw_center_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE,FAN_DEPTH);
-draw_right_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE,FAN_DEPTH);
+// DRAW 3.5 HDD CAGE GHOST
+/*
+cageX = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET;
+cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
+
+difference()
+{
+    #translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_35_cage_riser();
+
+    // make space for through holes that secure the rack secions together
+    union()
+    {
+        for (i = [1 : 3])
+        {
+            y = RACK_WALL_THICKNESS + RACK_TAB_SIZE[1] / 2 + (RACK_TAB_SIZE[1] * 2) * i;
+            translate([RACK_OUTER_DIMS[0]-RACK_OUTER_DIMS[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+HDD_CAGE_SHELF_DIMS[2]+EPSILON]) hole_through(name="M4",h=HDD_CAGE_SHELF_DIMS[2]+EPSILON, $fn=32);
+        }
+    }
+}
+#translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_35_cage_riserWithRails();
+*/
+
+draw_left_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
+draw_center_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
+draw_right_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
 
 draw_left_rear(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
 draw_center_rear(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
@@ -52,8 +74,6 @@ module draw_right_horizontal_joinery(rackUnits, depth)
         draw_horizontal_joinery(rackUnits, depth);
     }
 }
-
-
 
 module draw_left_rear(rackUnits, depth)
 {
@@ -198,7 +218,6 @@ module draw_center_front(rackUnits, depth, fanSize, fanDepth)
             translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, $fn=32);
             translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,M3x10NutHeight]) nutcatch_parallel("M3", clh=0.1);
         }
-
     }
 }
 
@@ -222,6 +241,15 @@ module draw_right_front(rackUnits, depth, fanSize, fanDepth)
         {
             translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, $fn=32);
         }
+        // through holes to mount 3.5 HDD cage
+        y = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
+        for (i = [0 : 1])
+        {
+            x = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET - HDD_35_SIDE_MOUNT_HOLES[i][1];
+            translate([x, y + HDD_CAGE_PILLAR_DIMS[1] / 2, -EPSILON]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=0.3, $fn=32);
+            translate([x, y + HDD_CAGE_SHELF_DIMS[0] + (HDD_CAGE_PILLAR_DIMS[1]*1.5), -EPSILON]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=0.3, $fn=32);
+        }
+
     }
 }
 
@@ -330,7 +358,7 @@ module draw_rack_left_wall(rackUnits, depth)
     translate([rack_outer_dims[0], rack_outer_dims[1], 0]) rotate([0,0,180]) draw_rack_right_wall(rackUnits, depth);
 }
 
-//TODO: much of this module can be simplified with loops and little cleaner math
+//TODO: much of this module can be simplified with loops and a little cleaner math
 module draw_rack_right_wall(rackUnits, depth)
 {
     rack_outer_dims = get_rack_outer_dims(rackUnits, depth);
@@ -486,6 +514,7 @@ module draw_rack_front(rackUnits, depth, fanSize, fanDepth)
     }
 }
 
+//TODO: provide structure for PCI cards
 module draw_rack_rear(rackUnits, depth)
 {
     rack_outer_dims = get_rack_outer_dims(rackUnits, depth);
