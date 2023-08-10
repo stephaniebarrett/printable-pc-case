@@ -6,13 +6,13 @@ use <hdd.scad>
 use <psu.scad>
 
 // DRAW MAINBOARD GHOST
-//#translate(MB_POSITION) color(c=[.5,0,0,.5]) draw_mATX_mainboard();
+#translate(MB_POSITION) color(c=[.5,0,0,.5]) draw_mATX_mainboard();
 
 // DRAW PSU GHOST
-//#translate(PSU_POSITION) color(c=[.5,0,0,.5]) draw_ATX_psu();
+#translate(PSU_POSITION) color(c=[.5,0,0,.5]) draw_ATX_psu();
 
 // DRAW 3.5 HDD CAGE GHOST
-/*
+
 cageX = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET;
 cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
 
@@ -31,7 +31,7 @@ difference()
     }
 }
 #translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_35_cage_riserWithRails();
-*/
+
 
 draw_left_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
 draw_center_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
@@ -86,7 +86,7 @@ module draw_left_rear(rackUnits, depth)
             draw_rack(rackUnits, depth);
         }
         // cutouts for the tabs
-        for (i = [0 : 3])
+        for (i = [1 : 3])
         {
             x = rack_outer_dims[0] / 3 - RACK_TAB_SIZE[0] + 0.5 - EPSILON;
             y = depth - RACK_WALL_THICKNESS - ((i + .5) * RACK_TAB_SIZE[1]) * 2;
@@ -114,7 +114,7 @@ module draw_center_rear(rackUnits, depth)
                 }
             }
             // tabs on each side
-            for (i = [0 : 3])
+            for (i = [1 : 3])
             {
                 x = rack_outer_dims[0] / 3 - RACK_TAB_SIZE[0] + 0.5 - EPSILON;
                 y = depth - RACK_WALL_THICKNESS - ((i + 0.5) * RACK_TAB_SIZE[1]) * 2;
@@ -124,7 +124,7 @@ module draw_center_rear(rackUnits, depth)
         }
         draw_PSU_floor_vent();
         // left side tab holes
-        for (i = [0 : 3])
+        for (i = [1 : 3])
         {
             y = depth - RACK_WALL_THICKNESS - (i * RACK_TAB_SIZE[1]) * 2 - RACK_TAB_SIZE[1]/2;
             translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
@@ -132,7 +132,7 @@ module draw_center_rear(rackUnits, depth)
         }
         
         // right side tab holes
-        for (i = [0 : 3])
+        for (i = [1 : 3])
         {
             y = depth - RACK_WALL_THICKNESS - (i * RACK_TAB_SIZE[1]) * 2 - RACK_TAB_SIZE[1]/2;
             translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
@@ -152,7 +152,7 @@ module draw_right_rear(rackUnits, depth)
             draw_rack(rackUnits, depth);
         }
         // cutouts for the tabs
-        for (i = [0 : 3])
+        for (i = [1 : 3])
         {
             x = rack_outer_dims[0] - rack_outer_dims[0] / 3 + 0.5 - EPSILON;
             y = depth - RACK_WALL_THICKNESS - ((i + .5) * RACK_TAB_SIZE[1]) * 2;
@@ -170,17 +170,19 @@ module draw_left_front(rackUnits, depth, fanSize, fanDepth)
         intersection()
         {
             translate([(rack_outer_dims[0]/3+RACK_WALL_THICKNESS-mountingRailThickness(MOUNTING_SCREW_TYPE)*0.5)-200,0,0]) cube(200);
-            draw_rack(rackUnits, depth, fanSize, fanDepth);
+            union()
+            {
+                draw_rack(rackUnits, depth, fanSize, fanDepth);
+                draw_rack_ears(rackUnits, depth);
+            }
         }
-        // cutouts for the tabs
-        for (y = [RACK_WALL_THICKNESS : RACK_TAB_SIZE[1]*2 : 200-RACK_TAB_SIZE[1]*2-1])
+        for (i = [1 : 3])
         {
+            y = RACK_WALL_THICKNESS + i * (RACK_TAB_SIZE[1]*2);
+            // cutouts for the tabs
             translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]+.5+EPSILON,y,-EPSILON]) cube(RACK_TAB_SIZE);
-        }
-        // through holes for securing tabs together
-        for (y = [RACK_WALL_THICKNESS+RACK_TAB_SIZE[1]/2 : RACK_TAB_SIZE[1]*2 : 200-RACK_TAB_SIZE[1]*2-1])
-        {
-            translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
+            // through holes for securing tabs together
+            translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y+RACK_TAB_SIZE[1]/2,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
         }
     }
 }
@@ -206,15 +208,17 @@ module draw_center_front(rackUnits, depth, fanSize, fanDepth)
         }
         
         // left side tab holes
-        for (y = [RACK_WALL_THICKNESS+RACK_TAB_SIZE[1]/2 : RACK_TAB_SIZE[1]*2 : 200-1])
+        for (i = [1 : 3])
         {
+            y = RACK_WALL_THICKNESS+RACK_TAB_SIZE[1]/2 + i * RACK_TAB_SIZE[1]*2;
             translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
             translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y,M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
         }
         
         // right side tab holes
-        for (y = [RACK_WALL_THICKNESS+RACK_TAB_SIZE[1]/2 : RACK_TAB_SIZE[1]*2 : 200-1])
+        for (i = [1 : 3])
         {
+            y = RACK_WALL_THICKNESS+RACK_TAB_SIZE[1]/2 + i * RACK_TAB_SIZE[1]*2;
             translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
             translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
         }
@@ -229,17 +233,19 @@ module draw_right_front(rackUnits, depth, fanSize, fanDepth)
         intersection()
         {
             translate([rack_outer_dims[0]/3*2+RACK_WALL_THICKNESS-mountingRailThickness(MOUNTING_SCREW_TYPE)*0.5,0,0]) cube(200);
-            draw_rack(rackUnits, depth, fanSize, fanDepth);
+            union()
+            {
+                draw_rack(rackUnits, depth, fanSize, fanDepth);
+                draw_rack_ears(rackUnits, depth);
+            }
         }
-        // cutouts for the tabs
-        for (y = [RACK_WALL_THICKNESS : RACK_TAB_SIZE[1]*2 : 200-RACK_TAB_SIZE[1]*2-1])
+        for (i = [1 : 3])
         {
+            y = RACK_WALL_THICKNESS + i * (RACK_TAB_SIZE[1]*2);
+            // cutouts for the tabs
             translate([rack_outer_dims[0]-rack_outer_dims[0]/3+.5-EPSILON,y,-EPSILON]) cube(RACK_TAB_SIZE);
-        }
-        // through holes for securing tabs together
-        for (y = [RACK_WALL_THICKNESS+RACK_TAB_SIZE[1]/2 : RACK_TAB_SIZE[1]*2 : 200-RACK_TAB_SIZE[1]*2-1])
-        {
-            translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
+            // through holes for securing tabs together
+            translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y+RACK_TAB_SIZE[1]/2,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
         }
         // through holes to mount 3.5 HDD cage
         y = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
@@ -268,7 +274,9 @@ module draw_horizontal_joinery(rackUnits, depth)
     {
         union()
         {
-            translate([x,y,(RACK_FLOOR_THICKNESS-0.5)/4]) cube([tabX*19-1,tabX-1,(RACK_FLOOR_THICKNESS-0.5)/2], center=true);
+            translate([x,y,(RACK_FLOOR_THICKNESS-0.5)/4]) cube([tabX*6-1,tabX-1,(RACK_FLOOR_THICKNESS-0.5)/2], center=true);
+            translate([x-tabX*7-1,y,(RACK_FLOOR_THICKNESS-0.5)/4]) cube([tabX*3-1,tabX-1,(RACK_FLOOR_THICKNESS-0.5)/2], center=true);
+            translate([x+tabX*7+1,y,(RACK_FLOOR_THICKNESS-0.5)/4]) cube([tabX*3-1,tabX-1,(RACK_FLOOR_THICKNESS-0.5)/2], center=true);
             // center cutout
             translate([x,y,(RACK_FLOOR_THICKNESS-0.5)/4]) cube([tabX-1,tabY-1,(RACK_FLOOR_THICKNESS-0.5)/2],center=true);
             // the rest of the cutouts
