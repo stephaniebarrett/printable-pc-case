@@ -41,7 +41,7 @@ if (DRAW_GHOSTS)
     {
         x = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET;
         y = RACK_WALL_THICKNESS + HDD_CAGE_PILLAR_DIMS[1] + HDD_CAGE_BUFFER_X / 2 + HDD_Y_OFFSET;
-        z = RACK_FLOOR_THICKNESS + i * HDD_CAGE_SHELF_SPACING + HDD_CAGE_SHELF_DIMS[2];
+        z = RACK_FLOOR_THICKNESS + i * HDD_35_CAGE_SHELF_SPACING + HDD_35_CAGE_SHELF_DIMS[2];
         #translate([x, y, z]) rotate([0,0,90]) draw_hdd_35();
     }
 }
@@ -72,7 +72,7 @@ else if (DRAW_HDD_CAGE == 1)
     cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
     difference()
     {
-        translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_35_cage_riser();
+        translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_cage("hdd",false);
 
         // make space for through holes that secure the rack secions together
         union()
@@ -80,7 +80,7 @@ else if (DRAW_HDD_CAGE == 1)
             for (i = [1 : 3])
             {
                 y = RACK_WALL_THICKNESS + RACK_TAB_SIZE[1] / 2 + (RACK_TAB_SIZE[1] * 2) * i;
-                translate([RACK_OUTER_DIMS[0]-RACK_OUTER_DIMS[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+HDD_CAGE_SHELF_DIMS[2]+EPSILON]) hole_through(name="M4",h=HDD_CAGE_SHELF_DIMS[2]+EPSILON, $fn=32);
+                translate([RACK_OUTER_DIMS[0]-RACK_OUTER_DIMS[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+HDD_35_CAGE_SHELF_DIMS[2]+EPSILON]) hole_through(name="M4",h=HDD_35_CAGE_SHELF_DIMS[2]+EPSILON, $fn=32);
             }
         }
     }
@@ -89,6 +89,30 @@ else if (DRAW_HDD_CAGE == 2)
 {
     cageX = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET;
     cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
-    translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_35_cage_riserWithRails();
+    translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_cage("hdd",true);
 }
+else if (DRAW_HDD_CAGE == 3)
+{
+    cageX = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET;
+    cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
+    difference()
+    {
+        translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_cage("ssd",false);
 
+        // make space for through holes that secure the rack secions together
+        union()
+        {
+            for (i = [1 : 3])
+            {
+                y = RACK_WALL_THICKNESS + RACK_TAB_SIZE[1] / 2 + (RACK_TAB_SIZE[1] * 2) * i;
+                translate([RACK_OUTER_DIMS[0]-RACK_OUTER_DIMS[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+HDD_25_CAGE_SHELF_DIMS[2]+EPSILON]) hole_through(name="M4",h=HDD_25_CAGE_SHELF_DIMS[2]+EPSILON, $fn=32);
+            }
+        }
+    }
+}
+else if (DRAW_HDD_CAGE == 4)
+{
+    cageX = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET;
+    cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
+    translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_cage("ssd",true);
+}
