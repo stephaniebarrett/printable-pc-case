@@ -28,6 +28,8 @@ Most of these modules approximate the physical dimensions of various PC componen
 On Windows, run 'exportAll.bat' to export all of the printable sections, using main.scad. This can be very resource intensive on systems with limited CPU cores.
 
 ## TODO
+- refine drive cage sizing & tolerances
+- support PCI expansion cards in the rear wall
 - support other mainboard specs
 - support other PSU secs
 - support various rack depth and height configurations

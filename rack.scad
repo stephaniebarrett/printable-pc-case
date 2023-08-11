@@ -10,17 +10,28 @@ use <psu.scad>
 // DRAW PSU GHOST
 %translate(PSU_POSITION) draw_ATX_psu();
 
-// DRAW 3.5 HDD CAGE GHOST
-cageX = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET;
-cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
+ssdOffsetX = HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1];
+ssdOffsetY = get_hdd_cage_width("hdd") - get_hdd_cage_width("ssd");
+rightCage = [RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET, RACK_FLOOR_THICKNESS];
+leftCage = [RACK_WALL_THICKNESS + HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET + get_hdd_cage_width("hdd"), RACK_FLOOR_THICKNESS];
 
-ssdOffset = HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1];
+// DRAW 2.5 HDD CAGE GHOSTS
+// right side
+%translate([rightCage[0]-ssdOffsetX, rightCage[1], rightCage[2]]) rotate([0,0,90]) draw_hdd_cage("ssd", true);
+%translate([rightCage[0]-ssdOffsetX, rightCage[1], rightCage[2]]) rotate([0,0,90]) draw_hdd_cage("ssd", false);
+// left side
+%translate([leftCage[0]+ssdOffsetX, leftCage[1] - ssdOffsetY, leftCage[2]]) rotate([0,0,-90]) draw_hdd_cage("ssd", true);
+%translate([leftCage[0]+ssdOffsetX, leftCage[1] - ssdOffsetY, leftCage[2]]) rotate([0,0,-90]) draw_hdd_cage("ssd", false);
 
-%translate([cageX-ssdOffset, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_cage("ssd");
-
+// DRAW 3.5 HDD CAGE GHOSTS
+// right side
 %difference()
 {
-    translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_cage("hdd");
+    union()
+    {
+        translate(rightCage) rotate([0,0,90]) draw_hdd_cage("hdd", true);
+        translate(rightCage) rotate([0,0,90]) draw_hdd_cage("hdd", false);
+    }
 
     // make space for through holes that secure the rack sections together
     union()
@@ -166,6 +177,11 @@ module draw_right_rear(rackUnits, depth)
 module draw_left_front(rackUnits, depth, fanSize, fanDepth)
 {
     rack_outer_dims = get_rack_outer_dims(rackUnits, depth);
+    ssdOffsetX = HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1];
+    ssdOffsetY = get_hdd_cage_width("hdd") - get_hdd_cage_width("ssd");
+    rightCage = [RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET, RACK_FLOOR_THICKNESS];
+    leftCage = [RACK_WALL_THICKNESS + HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET + get_hdd_cage_width("hdd"), RACK_FLOOR_THICKNESS];
+
     difference()
     {
         intersection()
@@ -185,7 +201,14 @@ module draw_left_front(rackUnits, depth, fanSize, fanDepth)
             // through holes for securing tabs together
             translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y+RACK_TAB_SIZE[1]/2,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
         }
-
+        // through holes to mount 2.5 HDD cage
+        y = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
+        for (i = [0 : 1])
+        {
+            x = RACK_WALL_THICKNESS + HDD_X_OFFSET + HDD_25_SIDE_MOUNT_HOLES[i][1];
+            translate([x+ssdOffsetX, y + HDD_CAGE_PILLAR_DIMS[1] / 2, -EPSILON]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=0.3, hcld=THhcld, $fn=32);
+            translate([x+ssdOffsetX, y + HDD_25_CAGE_SHELF_DIMS[0] + (HDD_CAGE_PILLAR_DIMS[1]*1.5), -EPSILON]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
+        }
     }
 }
 
@@ -267,7 +290,6 @@ module draw_right_front(rackUnits, depth, fanSize, fanDepth)
             translate([x-ssdCageOffset, y + HDD_CAGE_PILLAR_DIMS[1] / 2, -EPSILON]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=0.3, hcld=THhcld, $fn=32);
             translate([x-ssdCageOffset, y + HDD_25_CAGE_SHELF_DIMS[0] + (HDD_CAGE_PILLAR_DIMS[1]*1.5), -EPSILON]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
         }
-
     }
 }
 
