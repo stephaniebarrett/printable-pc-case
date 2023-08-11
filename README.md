@@ -1,22 +1,34 @@
 # 3D Printable Rackmount PC/Server Case using OpenScad.
 ## WIP
-Currently, creating various [OpenScad](https://openscad.org/) modules to facilitate the design of a modular rackmountable chassis.
+Generally, the goal of this project is to create [OpenScad](https://openscad.org/) modules to facilitate the design of a modular rackmountable computer chassis. 
 
 Inspired by https://www.printables.com/model/485778-mini-itx-server-rackmount-2u
 
 Requires the following OpenScad libraries, already included:
-- [Honeycomb](https://www.printables.com/model/263718-honeycomb-library-openscad) for generating honeycombs.
 - [nutsnbolts](https://github.com/JohK/nutsnbolts) for fasteners.
 
 ## Modules
-Most of these modules approximate the physical dimensions of various PC components. These are used to estimate positions and clearances of all the parts.
+Most of these modules approximate the physical dimensions of various PC components. These are used to estimate positions and clearances of all the parts. Most of the dimensions were pulled from spec sheets online, and the rest were measured from physical components.
 ### mainboard.scad
-- ATX and Micro ATX
+- ATX and Micro ATX models.
 ### psu.scad
-- ATX
+- ATX model.
 ### hdd.scad
-- 3.5"
+- 2.5" SSD & 3.5" HDD models.
+- additionally, modules to generate drive cages.
 ### fan.scad
-- 80mm and 120mm
+- 120mm, 92mm, 80mm, 70mm, 60mm, 50mm, 40mm models.
 ### rack.scad
-- 19"
+- 19", variable height measured in rack units (some testing is still required).
+- contains modules to cut up the rack into printable sections.
+### main.scad
+- main script interface; has some variables to control which printable section to render.
+
+## Exporting .stl Files
+On Windows, run 'exportAll.bat' to export all of the printable sections, using main.scad. This can be very resource intensive on systems with limited CPU cores.
+
+## TODO
+- support other mainboard specs
+- support other PSU secs
+- support various rack depth and height configurations
+- add export script for non-windows machines
