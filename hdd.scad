@@ -23,6 +23,14 @@ translate([0,HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1],0]) dra
 
 /// PUBLIC ///
 
+
+function get_hdd_cage_width(type) =
+    (type == "ssd") ?
+        HDD_CAGE_PILLAR_DIMS[0] * 2 + HDD_25_DIMS[0] + HDD_CAGE_BUFFER_X :
+    (type == "hdd") ?
+        HDD_CAGE_PILLAR_DIMS[0] * 2 + HDD_35_DIMS[0] + HDD_CAGE_BUFFER_X :
+    0;
+
 module draw_hdd(type, center=false)
 {
     if (type == "ssd")
