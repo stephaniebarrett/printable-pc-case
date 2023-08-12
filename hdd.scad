@@ -6,18 +6,24 @@ include <global.scad>
 for (j = [0 : HDD_35_CAGE_NUM_DRIVES - 1])
 {
     z = j * HDD_35_CAGE_SHELF_SPACING + HDD_35_CAGE_SHELF_DIMS[2];
-    #translate([HDD_CAGE_PILLAR_DIMS[0] + HDD_CAGE_BUFFER_X / 2, 0, z]) draw_hdd("hdd");
+    %translate([HDD_CAGE_PILLAR_DIMS[0] + HDD_CAGE_BUFFER_X / 2, 0, z]) draw_hdd("hdd");
 }
 
+draw_hdd_cage("hdd",true);
+//draw_hdd_cage("hdd",false);
+
+/*
 // ghost 2.5 SSDs
 for (j = [0 : HDD_25_CAGE_NUM_DRIVES - 1])
 {
     z = j * HDD_25_CAGE_SHELF_SPACING + HDD_25_CAGE_SHELF_DIMS[2];
-    #translate([HDD_CAGE_PILLAR_DIMS[0] + HDD_CAGE_BUFFER_X / 2, 0, z]) draw_hdd("ssd");
+    %translate([HDD_CAGE_PILLAR_DIMS[0] + HDD_CAGE_BUFFER_X / 2, 0, z]) draw_hdd("ssd");
 }
 
-draw_hdd_cage("hdd");
-translate([0,HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1],0]) draw_hdd_cage("ssd");
+translate([0,HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1],0]) draw_hdd_cage("ssd",true);
+translate([0,HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1],0]) draw_hdd_cage("ssd",false);
+
+*/
 
 
 
@@ -157,8 +163,16 @@ module prv_draw_hdd_cage_pillars(hddDims)
         {
             translate([x, 0, 0]) cube(HDD_CAGE_PILLAR_DIMS);
 
-            translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, -RACK_FLOOR_THICKNESS]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
-            translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, 20 + M3x10HeadHeight - RACK_FLOOR_THICKNESS]) rotate([0, 0, 90]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+            if (USE_HEATSETS)
+            {
+                translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, -RACK_FLOOR_THICKNESS]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=16, cld=THcld, hcld=THhcld, $fn=32);
+                translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, -EPSILON]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+            }
+            else
+            {
+                translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, -RACK_FLOOR_THICKNESS]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
+                translate([x + HDD_CAGE_PILLAR_DIMS[0] / 2 , HDD_CAGE_PILLAR_DIMS[0] / 2, 20 + M3x10HeadHeight - RACK_FLOOR_THICKNESS]) rotate([0, 0, 90]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+            }
         }
     }
 }
@@ -171,7 +185,15 @@ module prv_draw_hdd_riser_connecting_bolts(sideMountHoles, shelfDims, railDims)
     for (i = [0 : 1])
     {
         x = ((i + 0.5) * HDD_CAGE_PILLAR_DIMS[0]) + (i * shelfDims[0]);
-        translate([x, y, z]) rotate([-90, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
-        translate([x, y - 20 - M3x10HeadHeight, z]) rotate([90, -90, 0]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+        if (USE_HEATSETS)
+        {
+            translate([x, y, z]) rotate([-90, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=12, cld=THcld, hcld=THhcld, $fn=32);
+            translate([x, y - railDims[0], z]) rotate([90, 0, 0]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+        }
+        else
+        {
+            translate([x, y, z]) rotate([-90, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
+            translate([x, y - 20 - M3x10HeadHeight, z]) rotate([90, -90, 0]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+        }
     }
 }

@@ -1,13 +1,19 @@
 include <externals/nutsnbolts/cyl_head_bolt.scad>;
+include <utility.scad>
 
 function INCH_TO_MM(inch) = inch * 25.4;
 
 EPSILON = 0.01;
 
+USE_HEATSETS = true;
+
 MOUNTING_SCREW_TYPE = "M3x10";
 M3x10HeadHeight=_get_head_height(MOUNTING_SCREW_TYPE);
 M3x10NutHeight =_get_nut_height(MOUNTING_SCREW_TYPE);
 M3x10HeadDia=_get_head_dia(MOUNTING_SCREW_TYPE);
+
+M3HEATSET_DIAMETER = 3.9;
+M3HEATSET_HEIGHT = 5.7;
 
 RACK_EAR_SIZE = [15.875, 6, 44.5];
 RACK_EAR_HOLE_OFFSET = 6.35;

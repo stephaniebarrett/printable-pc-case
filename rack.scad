@@ -438,29 +438,61 @@ module draw_rack_right_wall(rackUnits, depth)
             // near mount
             translate([0,0,0]) union() 
             {
-                translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
-                rotate([0,0,180]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                if (USE_HEATSETS)
+                {
+                    translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=8, cld=THcld, hcld=THhcld, $fn=32);
+                    translate([0,0,RACK_FLOOR_THICKNESS-M3HEATSET_HEIGHT*1.1+EPSILON]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+                }
+                else
+                {
+                    translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
+                    rotate([0,0,180]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                }
             }
 
             // near-mid mount
             translate([-RACK_WALL_THICKNESS,rack_outer_dims[1]/2-RACK_MODULE_JOINING_PILLAR_DIMS[1]-RACK_WALL_THICKNESS,0]) union() 
             {
-                translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
-                rotate([0,0,180]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                if (USE_HEATSETS)
+                {
+                    translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=8, cld=THcld, hcld=THhcld, $fn=32);
+                    translate([0,0,RACK_FLOOR_THICKNESS-M3HEATSET_HEIGHT*1.1+EPSILON]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+                }
+                else
+                {
+                    translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
+                    rotate([0,0,180]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                }
             }
 
             // far-mid mount
             translate([-RACK_WALL_THICKNESS,rack_outer_dims[1]/2-RACK_WALL_THICKNESS,0]) union() 
             {
-                translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
-                rotate([0,0,180]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                if (USE_HEATSETS)
+                {
+                    translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=8, cld=THcld, hcld=THhcld, $fn=32);
+                    translate([0,0,RACK_FLOOR_THICKNESS-M3HEATSET_HEIGHT*1.1+EPSILON]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+                }
+                else
+                {
+                    translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
+                    rotate([0,0,180]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                }
             }
         
             // far mount
             translate([0,rack_outer_dims[1]-RACK_MODULE_JOINING_PILLAR_DIMS[1]*1.5-RACK_WALL_THICKNESS,0]) union() 
             {
-                translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
-                rotate([0,0,180]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                if (USE_HEATSETS)
+                {
+                    translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=8, cld=THcld, hcld=THhcld, $fn=32);
+                    translate([0,0,RACK_FLOOR_THICKNESS-M3HEATSET_HEIGHT*1.1+EPSILON]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+                }
+                else
+                {
+                    translate([0,0,RACK_FLOOR_THICKNESS+EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
+                    rotate([0,0,180]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                }
             }
         }
         
@@ -469,8 +501,8 @@ module draw_rack_right_wall(rackUnits, depth)
         {
             translate([rack_outer_dims[0]-RACK_WALL_THICKNESS-RACK_MODULE_JOINING_PILLAR_DIMS[0]/2,rack_outer_dims[1]/2-RACK_MODULE_JOINING_PILLAR_DIMS[1],z]) rotate([90,0,0]) union()
             {
-                //translate([0,0,-moduleMountingPillarThickness(MOUNTING_SCREW_TYPE)*2+M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
-                //hole_through(name="M3", l=moduleMountingPillarThickness(MOUNTING_SCREW_TYPE)*2, cld=THcld, h=M3x10HeadHeight, hcld=THhcld, $fn=32);
+                translate([0,0,-RACK_MODULE_JOINING_PILLAR_DIMS[0]*2-M3x10HeadHeight]) rotate([0,0,90]) nutcatch_parallel("M3", clh=NPclh);
+                hole_through(name="M3", l=RACK_MODULE_JOINING_PILLAR_DIMS[0]*2, cld=THcld, h=M3x10HeadHeight, hcld=THhcld, $fn=32);
             }
         }
 
@@ -499,10 +531,18 @@ module draw_rack_front(rackUnits, depth, fanSize, fanDepth)
                     offsetZ = (rack_inner_dims[2] - fanSize) / 2;
                     // pillar
                     translate([x, RACK_WALL_THICKNESS, 0]) cube([RACK_MODULE_JOINING_PILLAR_DIMS[0] * 2, RACK_MODULE_JOINING_PILLAR_DIMS[1], RACK_MODULE_JOINING_PILLAR_DIMS[2]]);
-                    // roof bolt hole in the pillar
-                    translate([x + RACK_MODULE_JOINING_PILLAR_DIMS[0] / 2, RACK_WALL_THICKNESS + RACK_MODULE_JOINING_PILLAR_DIMS[1] / 2, rack_inner_dims[2] + EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=offsetZ/2, cld=THcld, hcld=THhcld, $fn=32);
-                    // roof captive nut cutout in the pillar
-                    translate([x + RACK_MODULE_JOINING_PILLAR_DIMS[0] / 2, RACK_WALL_THICKNESS + RACK_MODULE_JOINING_PILLAR_DIMS[1] / 2, rack_inner_dims[2] - offsetZ / 2]) rotate([0,0,90]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                    if (USE_HEATSETS)
+                    {
+                        translate([x + RACK_MODULE_JOINING_PILLAR_DIMS[0] / 2, RACK_WALL_THICKNESS + RACK_MODULE_JOINING_PILLAR_DIMS[1] / 2, rack_inner_dims[2] + EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=8, cld=THcld, hcld=THhcld, $fn=32);
+                        translate([x + RACK_MODULE_JOINING_PILLAR_DIMS[0] / 2, RACK_WALL_THICKNESS + RACK_MODULE_JOINING_PILLAR_DIMS[1] / 2, rack_inner_dims[2] - M3HEATSET_HEIGHT*1.1 + EPSILON]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+                    }
+                    else
+                    {
+                        // roof bolt hole in the pillar
+                        translate([x + RACK_MODULE_JOINING_PILLAR_DIMS[0] / 2, RACK_WALL_THICKNESS + RACK_MODULE_JOINING_PILLAR_DIMS[1] / 2, rack_inner_dims[2] + EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=offsetZ/2, cld=THcld, hcld=THhcld, $fn=32);
+                        // roof captive nut cutout in the pillar
+                        translate([x + RACK_MODULE_JOINING_PILLAR_DIMS[0] / 2, RACK_WALL_THICKNESS + RACK_MODULE_JOINING_PILLAR_DIMS[1] / 2, rack_inner_dims[2] - offsetZ / 2]) rotate([0,0,90]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                    }
                     // horizontal fasteners
                     for (z = [offsetZ, rack_inner_dims[2] - offsetZ])
                     {
