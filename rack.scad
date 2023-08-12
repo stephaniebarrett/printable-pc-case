@@ -94,16 +94,18 @@ module draw_left_rear(rackUnits, depth)
     {
         intersection()
         {
-            translate([(rack_outer_dims[0]/3+RACK_WALL_THICKNESS-RACK_MODULE_JOINING_PILLAR_DIMS[0]*0.5)-200,200,0]) cube(200);
+            translate([-RACK_EAR_SIZE[0],RACK_OUTER_DIMS[1]-200,0])  cube([RACK_OUTER_DIMS[0]/3+RACK_EAR_SIZE[0],200,200]);
             draw_rack(rackUnits, depth);
         }
         // cutouts for the tabs
+        x = rack_outer_dims[0] / 3;
         for (i = [1 : 3])
         {
-            x = rack_outer_dims[0] / 3 - RACK_TAB_SIZE[0] + 0.5 - EPSILON;
-            y = depth - RACK_WALL_THICKNESS - ((i + .5) * RACK_TAB_SIZE[1]) * 2;
-            translate([x,y,-EPSILON]) cube(RACK_TAB_SIZE);
-            translate([x+RACK_TAB_SIZE[0]/2,y+RACK_TAB_SIZE[1]/2,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
+            y = depth - RACK_WALL_THICKNESS - i * (RACK_TAB_SIZE[1] * 2);
+            // cutouts for the tabs
+            translate([x - RACK_TAB_SIZE[0], y, -EPSILON]) cube(RACK_TAB_SIZE);
+            // through holes for securing tabs together
+            translate([x - RACK_TAB_SIZE_SMALL[0] / 2, y + RACK_TAB_SIZE[1] / 2, RACK_FLOOR_THICKNESS + EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
         }
     }
 }
@@ -117,38 +119,31 @@ module draw_center_rear(rackUnits, depth)
         {
             intersection()
             {
-                translate([rack_outer_dims[0]/3+RACK_WALL_THICKNESS-RACK_MODULE_JOINING_PILLAR_DIMS[0]*0.5,200,0]) cube([rack_outer_dims[0]/3,200,200]);
+                translate([rack_outer_dims[0]/3,depth-200,0]) cube([rack_outer_dims[0]/3,200,200]);
                 union()
                 {
                     draw_rack_floor(rackUnits,depth);
-                    draw_rack_walls(rackUnits,depth);
                     draw_rack_rear(rackUnits, depth);
                 }
             }
             // tabs on each side
             for (i = [1 : 3])
             {
-                x = rack_outer_dims[0] / 3 - RACK_TAB_SIZE[0] + 0.5 - EPSILON;
-                y = depth - RACK_WALL_THICKNESS - ((i + 0.5) * RACK_TAB_SIZE[1]) * 2;
-                translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]+1.5,y+0.5,0]) cube(RACK_TAB_SIZE_SMALL);
-                translate([rack_outer_dims[0]-rack_outer_dims[0]/3+.5,y+0.5,0]) cube(RACK_TAB_SIZE_SMALL);
+                y = depth - RACK_WALL_THICKNESS - i * (RACK_TAB_SIZE[1] * 2);
+                translate([rack_outer_dims[0]/3-RACK_TAB_SIZE_SMALL[0],y+RACK_TAB_SIZE_DIFFERENCE[1]/2,0]) cube(RACK_TAB_SIZE_SMALL);
+                translate([rack_outer_dims[0]-rack_outer_dims[0]/3,y+RACK_TAB_SIZE_DIFFERENCE[1]/2,0]) cube(RACK_TAB_SIZE_SMALL);
             }
         }
         draw_PSU_floor_vent();
-        // left side tab holes
-        for (i = [1 : 3])
+        // tab holes on each side
+        for (x = [rack_outer_dims[0] / 3 - RACK_TAB_SIZE_SMALL[0] / 2,  rack_outer_dims[0] - rack_outer_dims[0] / 3 + RACK_TAB_SIZE[0] / 2])
         {
-            y = depth - RACK_WALL_THICKNESS - (i * RACK_TAB_SIZE[1]) * 2 - RACK_TAB_SIZE[1]/2;
-            translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
-            translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y,M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
-        }
-        
-        // right side tab holes
-        for (i = [1 : 3])
-        {
-            y = depth - RACK_WALL_THICKNESS - (i * RACK_TAB_SIZE[1]) * 2 - RACK_TAB_SIZE[1]/2;
-            translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
-            translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE[0]/2,y,M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
+            for (i = [1 : 3])
+            {
+                y = depth - RACK_WALL_THICKNESS - i * (RACK_TAB_SIZE[1] * 2) + RACK_TAB_SIZE[1] / 2;
+                translate([x,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
+                translate([x,y,M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
+            }
         }
     }
 }
@@ -160,15 +155,17 @@ module draw_right_rear(rackUnits, depth)
     {
         intersection()
         {
-            translate([rack_outer_dims[0]/3*2+RACK_WALL_THICKNESS-RACK_MODULE_JOINING_PILLAR_DIMS[0]*0.5,200,0]) cube(200);
+            translate([rack_outer_dims[0]-rack_outer_dims[0]/3,depth-200,0]) cube([rack_outer_dims[0]/3+RACK_EAR_SIZE[0],200,200]);
             draw_rack(rackUnits, depth);
         }
         // cutouts for the tabs
+        x = rack_outer_dims[0] - rack_outer_dims[0] / 3;
         for (i = [1 : 3])
         {
-            x = rack_outer_dims[0] - rack_outer_dims[0] / 3 + 0.5 - EPSILON;
-            y = depth - RACK_WALL_THICKNESS - ((i + .5) * RACK_TAB_SIZE[1]) * 2;
+            y = depth - RACK_WALL_THICKNESS - i * (RACK_TAB_SIZE[1] * 2);
+            // cutouts for the tabs
             translate([x,y,-EPSILON]) cube(RACK_TAB_SIZE);
+            // through holes for securing tabs together
             translate([x+RACK_TAB_SIZE[0]/2,y+RACK_TAB_SIZE[1]/2,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
         }
     }
@@ -232,21 +229,15 @@ module draw_center_front(rackUnits, depth, fanSize, fanDepth)
                 translate([rack_outer_dims[0]-rack_outer_dims[0]/3,y+.5,0]) cube(RACK_TAB_SIZE_SMALL);
             }
         }
-        
-        // left side tab holes
-        for (i = [1 : 3])
+        // through holes
+        for (x = [rack_outer_dims[0] / 3 - RACK_TAB_SIZE_SMALL[0] / 2, rack_outer_dims[0] - rack_outer_dims[0] / 3 + RACK_TAB_SIZE_SMALL[0] / 2])
         {
-            y = RACK_WALL_THICKNESS+RACK_TAB_SIZE[1]/2 + i * RACK_TAB_SIZE[1]*2;
-            translate([rack_outer_dims[0]/3-RACK_TAB_SIZE_SMALL[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
-            translate([rack_outer_dims[0]/3-RACK_TAB_SIZE_SMALL[0]/2,y,M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
-        }
-        
-        // right side tab holes
-        for (i = [1 : 3])
-        {
-            y = RACK_WALL_THICKNESS+RACK_TAB_SIZE[1]/2 + i * RACK_TAB_SIZE[1]*2;
-            translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE_SMALL[0]/2,y,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
-            translate([rack_outer_dims[0]-rack_outer_dims[0]/3+RACK_TAB_SIZE_SMALL[0]/2,y,M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
+            for (i = [1 : 3])
+            {
+                y = RACK_WALL_THICKNESS + RACK_TAB_SIZE[1] / 2 + i * RACK_TAB_SIZE[1] * 2;
+                translate([x, y, RACK_FLOOR_THICKNESS + EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
+                translate([x, y, M3x10NutHeight]) nutcatch_parallel("M3", clh=NPclh);
+            }
         }
     }
 }
@@ -584,34 +575,44 @@ module draw_rack_rear(rackUnits, depth)
    
     difference()
     {
-        translate([RACK_WALL_THICKNESS,0,RACK_FLOOR_THICKNESS]) union()
+        translate([0,0,RACK_FLOOR_THICKNESS]) union()
         {
             z = rack_inner_dims[2]-mountSize[2];
             y = rack_outer_dims[1]-RACK_WALL_THICKNESS-RACK_MODULE_JOINING_PILLAR_DIMS[1];
-            translate([rack_outer_dims[0]/2-RACK_MODULE_JOINING_PILLAR_DIMS[0],y,z]) cube(mountSize);
-            for (i = [1.5, 0.5])
+            difference()
             {
-                translate([rack_outer_dims[0]/3-RACK_MODULE_JOINING_PILLAR_DIMS[0]*i,y,z]) cube(mountSize);
-                translate([rack_outer_dims[0]-rack_outer_dims[0]/3-RACK_MODULE_JOINING_PILLAR_DIMS[0]*i,y,z]) cube(mountSize);
+                translate([rack_outer_dims[0]/2-RACK_MODULE_JOINING_PILLAR_DIMS[0]/2,y,z]) cube(mountSize);
+                // roof mounting holes
+                translate([rack_outer_dims[0]/2-RACK_MODULE_JOINING_PILLAR_DIMS[0]/2+RACK_MODULE_JOINING_PILLAR_DIMS[0]/2,y+RACK_MODULE_JOINING_PILLAR_DIMS[1]/2,rack_inner_dims[2] + EPSILON]) union()
+                {
+                    rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
+                    if (USE_HEATSETS)
+                    {
+                        translate([0, 0, -M3HEATSET_HEIGHT*1.1]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+                    }
+                    else
+                    {
+                        translate([0,0,-RACK_FLOOR_THICKNESS]) rotate([0,0,-90]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
+                    }
+                }
+            }
+            for (i = [0, 1])
+            {
+                x = rack_outer_dims[0] / 3 - RACK_MODULE_JOINING_PILLAR_DIMS[0] * i;
+                translate([x, y, z]) cube(mountSize);
+                translate([rack_outer_dims[0] - x - RACK_MODULE_JOINING_PILLAR_DIMS[0], y, z]) cube(mountSize);
             }
         }
         
         // module mounting holes
-        for (x = [rack_outer_dims[0]/3-RACK_MODULE_JOINING_PILLAR_DIMS[0]+0.5, rack_outer_dims[0]-rack_outer_dims[0]/3-RACK_MODULE_JOINING_PILLAR_DIMS[1]+0.5])
+        for (x = [rack_outer_dims[0]/3-RACK_MODULE_JOINING_PILLAR_DIMS[0], rack_outer_dims[0]-rack_outer_dims[0]/3-RACK_MODULE_JOINING_PILLAR_DIMS[0]])
         {
             translate([x,rack_outer_dims[1]-RACK_WALL_THICKNESS-RACK_MODULE_JOINING_PILLAR_DIMS[1]+mountSize[1]/2,rack_inner_dims[2]]) union()
             {
-                translate([mountSize[0]*2-M3x10NutHeight-0.1,0,0]) rotate([0,-90,0]) nutcatch_parallel("M3", clh=NPclh);
-                //rotate([0,-90,0]) hole_through(name="M3", l=moduleMountingPillarThickness(MOUNTING_SCREW_TYPE)*2, cld=THcld, h=M3x10HeadHeight, hcld=THhcld, $fn=32);
+                translate([mountSize[0]*2-M3x10NutHeight,0,0]) rotate([0,-90,0]) nutcatch_parallel("M3", clh=NPclh);
+                rotate([0,-90,0]) hole_through(name="M3", l=RACK_MODULE_JOINING_PILLAR_DIMS[0]*2-M3x10HeadHeight, cld=THcld, h=M3x10HeadHeight, hcld=THhcld, $fn=32);
             }
         }
-        // roof mounting holes
-        translate([rack_outer_dims[0]/2+0.5,rack_outer_dims[1]-RACK_WALL_THICKNESS-RACK_MODULE_JOINING_PILLAR_DIMS[1]/2,rack_outer_dims[2]-RACK_WALL_THICKNESS]) union()
-        {
-            translate([0,0,EPSILON]) rotate([0,0,90]) hole_through(name="M3", l=RACK_FLOOR_THICKNESS, cld=THcld, hcld=THhcld, $fn=32);
-            translate([0,0,-RACK_WALL_THICKNESS]) rotate([0,0,-90]) nutcatch_sidecut("M3", clh=NSclh, clsl=NSclsl);
-        }
-
     }
 
     difference()
@@ -639,10 +640,9 @@ module draw_rack_rear(rackUnits, depth)
 
         for (i = [-1:1])
         {
-            translate([x+((fanSize+20)*i), y, z]) draw_fan_through_hole(fanSize,fanSize,FAN_DEPTH);
-            translate([x+((fanSize+20)*i), y, z]) draw_fan_mounting_holes(fanSize,FAN_DEPTH);
+            translate([x+(2*i)+((fanSize+20)*i), y, z]) draw_fan_through_hole(fanSize,fanSize,FAN_DEPTH);
+            translate([x+(2*i)+((fanSize+20)*i), y, z]) draw_fan_mounting_holes(fanSize,FAN_DEPTH);
         }
-
     }
 }
 
@@ -659,14 +659,16 @@ module draw_rack_ears(rackUnits, depth)
 
 module draw_rack_ear()
 {
-    //TODO: support circular holes
     difference()
     {
         cube(RACK_EAR_SIZE);
         for (i = [0 : 2])
         {
             z = i * RACK_EAR_HOLE_SPACING + RACK_EAR_HOLE_OFFSET;
-            translate([RACK_EAR_SIZE[0]/2, RACK_EAR_SIZE[1]/2, z]) cube(9.4, center=true);
+            if (RACK_EAR_TYPE == "square")
+                translate([RACK_EAR_SIZE[0]/2, RACK_EAR_SIZE[1]/2, z]) cube(RACK_EAR_HOLE_SIZE_SQUARE, center=true);
+            else if (RACK_EAR_TYPE == "round")
+                translate([RACK_EAR_SIZE[0]/2,RACK_EAR_SIZE[1]/2,z]) rotate([90,0,0]) cylinder(h=RACK_EAR_SIZE[1]*2, d=RACK_EAR_HOLE_SIZE_ROUND, center=true, $fn=32);
         }
     }
 }
@@ -679,6 +681,6 @@ module draw_rack(rackUnits, depth, fanSize=0, fanDepth=0)
         draw_rack_walls(rackUnits, depth);
         draw_rack_rear(rackUnits, depth);
         draw_rack_front(rackUnits, depth, fanSize, fanDepth);
-
+        draw_rack_ears(rackUnits, depth);
     }
 }
