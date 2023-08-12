@@ -44,7 +44,7 @@ leftCage = [RACK_WALL_THICKNESS + HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFS
     }
 }
 
-
+/*
 draw_left_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
 draw_center_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
 draw_right_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
@@ -56,6 +56,9 @@ draw_right_rear(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
 draw_left_horizontal_joinery(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
 draw_center_horizontal_joinery(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
 draw_right_horizontal_joinery(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
+*/
+
+draw_rack(NUMBER_OF_RACK_UNITS, RACK_DEPTH, FAN_SIZE_FRONT, FAN_DEPTH);
 
 module draw_left_horizontal_joinery(rackUnits, depth)
 {
