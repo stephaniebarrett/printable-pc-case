@@ -1,7 +1,7 @@
 include <global.scad>
 
 // EXAMPLE //
-
+/*
 // ghost 3.5 HDDs
 for (j = [0 : HDD_35_CAGE_NUM_DRIVES - 1])
 {
@@ -11,7 +11,7 @@ for (j = [0 : HDD_35_CAGE_NUM_DRIVES - 1])
 
 draw_hdd_cage("hdd",true);
 draw_hdd_cage("hdd",false);
-
+*/
 // ghost 2.5 SSDs
 translate([200,0,0])
 {
@@ -24,6 +24,66 @@ translate([200,0,0])
     draw_hdd_cage("ssd",true);
     draw_hdd_cage("ssd",false);
 }
+
+
+draw_hdd_cage_vertical("hdd");
+
+module draw_hdd_cage_vertical(type, numDrives=4)
+{
+    h = (RACK_INNER_DIMS[2] - HDD_35_DIMS[0]) / 2 - HDD_CAGE_BUFFER_X/2;
+    w = (HDD_35_DIMS[2] + HDD_35_CAGE_SHELF_DIMS[1] + HDD_CAGE_BUFFER_X/2) * numDrives + HDD_CAGE_BUFFER_X;
+    for (i = [0 : 1])
+    {
+        y = HDD_35_SIDE_MOUNT_HOLES[i][1]-HDD_35_CAGE_SHELF_DIMS[1]/2;
+        // pillars
+        for (j = [0, w])
+        {
+            difference()
+            {
+                translate([j,y,0]) cube(HDD_CAGE_PILLAR_DIMS);
+                translate([HDD_CAGE_PILLAR_DIMS[0]/2+j,y+HDD_CAGE_PILLAR_DIMS[1]/2,-EPSILON]) draw_heatset_insert(M3HEATSET_HEIGHT, M3HEATSET_DIAMETER);
+            }
+        }
+
+        // bottom shelves
+        difference()
+        {
+            translate([HDD_CAGE_PILLAR_DIMS[0],y,0]) cube([w-HDD_CAGE_PILLAR_DIMS[0],HDD_35_CAGE_SHELF_DIMS[1],h]);
+            for (j = [1 : numDrives])
+            {
+                x = (HDD_35_DIMS[2] + HDD_35_CAGE_SHELF_DIMS[1] + HDD_CAGE_BUFFER_X / 2) * j - HDD_35_SIDE_MOUNT_HOLES[1][2]; 
+                translate([x,y+HDD_35_CAGE_SHELF_DIMS[1]/2,0]) rotate([180,0,0]) hole_through(name="M3",h=M3x10HeadHeight, l=14, cld=THcld, hcld=THhcld, $fn=32);
+            }
+        }
+
+        // top shelves
+        difference()
+        {
+            translate([0,y,HDD_CAGE_PILLAR_DIMS[2]-h]) cube([w,HDD_35_CAGE_SHELF_DIMS[1],h]);
+            for (j = [1 : numDrives])
+            {
+                x = (HDD_35_DIMS[2] + HDD_35_CAGE_SHELF_DIMS[1] + HDD_CAGE_BUFFER_X / 2) * j - HDD_35_SIDE_MOUNT_HOLES[1][2]; 
+                translate([x,y+HDD_35_CAGE_SHELF_DIMS[1]/2,HDD_CAGE_PILLAR_DIMS[2]]) hole_through(name="M3",h=M3x10HeadHeight, l=14, cld=THcld, hcld=THhcld, $fn=32);
+            }
+        }
+    }
+    {
+        // cross members
+        y = HDD_35_SIDE_MOUNT_HOLES[1][1];
+        dims = [HDD_CAGE_PILLAR_DIMS[0],HDD_35_SIDE_MOUNT_HOLES[0][1]-HDD_35_SIDE_MOUNT_HOLES[1][1],h];
+        translate([0,y,HDD_CAGE_PILLAR_DIMS[2]-h]) cube(dims);
+        translate([w,y,HDD_CAGE_PILLAR_DIMS[2]-h]) cube(dims);
+    }
+/*
+    // drives
+    for (i = [1 : numDrives])
+    {
+        x = (HDD_35_DIMS[2] + HDD_35_CAGE_SHELF_DIMS[1] + HDD_CAGE_BUFFER_X / 2) * i;
+        %translate([x,0,h+HDD_CAGE_BUFFER_X/2]) rotate([0,-90,0]) draw_hdd(type);
+    }
+*/
+}
+
 
 /// PUBLIC ///
 

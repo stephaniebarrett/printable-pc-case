@@ -1,8 +1,8 @@
 @echo off
 
 echo "Joinery"
-call exportJoinery.bat
+start /B exportJoinery.bat
 echo "Drive Cages"
-call exportDriveCages.bat
+start /B exportDriveCages.bat
 echo "Rack Parts"
-call exportRack.bat
+start /B exportRack.bat

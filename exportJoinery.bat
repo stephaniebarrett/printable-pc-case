@@ -1,7 +1,12 @@
 @echo off
 SETLOCAL EnableDelayedExpansion
 
+IF NOT exist "export\" mkdir export
+
 FOR /l %%G IN (1,1,3) DO (
-	set filename=joinery%%G.stl
-	start /B openscad -o !filename! -D DRAW_JOINERY=%%G main.scad
+	set filename=export\joinery%%G.stl
+	echo. && echo !filename!
+	call openscad -o !filename! -D DRAW_JOINERY=%%G main.scad
 )
+
+echo "Joinery Complete"

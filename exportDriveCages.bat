@@ -1,7 +1,12 @@
 @echo off
 SETLOCAL EnableDelayedExpansion
 
-FOR /l %%G IN (1,1,4) DO (
-	set filename=hddcage%%G.stl
-	start /B openscad -o !filename! -D DRAW_HDD_CAGE=%%G main.scad
+IF NOT exist "export\" mkdir export
+
+FOR /l %%G IN (1,1,5) DO (
+	set filename=export\hddcage%%G.stl
+	echo. && echo !filename!
+	call openscad -o !filename! -D DRAW_HDD_CAGE=%%G main.scad
 )
+
+echo "Drive Cages Complete"

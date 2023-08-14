@@ -1,4 +1,5 @@
 include <externals/nutsnbolts/cyl_head_bolt.scad>;
+include <honeycomb.scad>
 include <utility.scad>
 
 function INCH_TO_MM(inch) = inch * 25.4;
@@ -6,6 +7,18 @@ function INCH_TO_MM(inch) = inch * 25.4;
 EPSILON = 0.01;
 
 USE_HEATSETS = true;
+
+/* CASE CONFIGURATION
+    1:  - PSU back right, low
+        - mATX mainboard back left
+        - 2.5" (7 disks) OR 3.5" (4 disks) drive cage front right
+        - 2.5" (7 disks) drive cage front left
+    2:  - PSU back left, hight (above ATX MB if used)
+        - mATX OR ATX mainboard back right (PSU will cover some expansion slots if ATX is used)
+        - 2.5" (7 disks) drive cage front right
+        - 2.5" (7 disks) OR 3.5" (3 disks) drive cage front left
+*/
+CASE_CONFIGURATION = 1;
 
 MOUNTING_SCREW_TYPE = "M3x10";
 M3x10HeadHeight=_get_head_height(MOUNTING_SCREW_TYPE);
@@ -129,6 +142,7 @@ HDD_25_SIDE_MOUNT_HOLES = [
 ];
 
 HDD_35_CAGE_NUM_DRIVES = 4;
+HDD_35_CAGE_NUM_DRIVES_CONFIG2 = 3;
 HDD_25_CAGE_NUM_DRIVES = 7;
 
 HDD_35_CAGE_OFFSET_Z = 12;
@@ -153,8 +167,25 @@ HDD_X_OFFSET = 5; // from RACK WIDTH
 
 COMPONENT_GAP = 15;
 
-MB_POSITION = [RACK_WALL_THICKNESS + COMPONENT_GAP, 400 - mATX_MB_DIMS[1] - RACK_WALL_THICKNESS, RACK_FLOOR_THICKNESS + MB_STANDOFF_HEIGHT + MB_OFFSET_Z];
-PSU_POSITION = [RACK_OUTER_DIMS[0] - ATX_PSU_DIMS[0] - RACK_WALL_THICKNESS - COMPONENT_GAP/2, RACK_OUTER_DIMS[1] - ATX_PSU_DIMS[1] - RACK_WALL_THICKNESS, RACK_FLOOR_THICKNESS*2];
+function get_psu_position(configuration) =
+    (configuration == 1) ?
+        [RACK_OUTER_DIMS[0] - ATX_PSU_DIMS[0] - RACK_WALL_THICKNESS - COMPONENT_GAP / 3, RACK_OUTER_DIMS[1] - ATX_PSU_DIMS[1] - RACK_WALL_THICKNESS, RACK_FLOOR_THICKNESS * 2]
+    : (configuration == 2) ?
+        [RACK_WALL_THICKNESS + COMPONENT_GAP / 3, RACK_OUTER_DIMS[1] - ATX_PSU_DIMS[1] - RACK_WALL_THICKNESS, RACK_OUTER_DIMS[2] - ATX_PSU_DIMS[2] - RACK_ROOF_THICKNESS - 1]
+    : [0, 0, 0];
+
+function get_mb_position(configuration) =
+    (configuration == 1) ?
+        [RACK_WALL_THICKNESS + COMPONENT_GAP, RACK_DEPTH - mATX_MB_DIMS[1] - RACK_WALL_THICKNESS, RACK_FLOOR_THICKNESS + MB_STANDOFF_HEIGHT + MB_OFFSET_Z]
+    : (configuration == 2) ?
+        [RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - RACK_MODULE_JOINING_PILLAR_DIMS[0] - COMPONENT_GAP / 3 - ATX_MB_DIMS[0], RACK_DEPTH - ATX_MB_DIMS[1] - RACK_WALL_THICKNESS, RACK_FLOOR_THICKNESS + MB_STANDOFF_HEIGHT + MB_OFFSET_Z]
+    : [0, 0, 0];
+
+MB_POSITION = get_mb_position(CASE_CONFIGURATION);
+PSU_POSITION = get_psu_position(CASE_CONFIGURATION);
+
+PSU_FLOOR_VENT_HOLE_SIZE = 80;
+PSU_FLOOR_VENT_POSITION = [PSU_POSITION[0] + ATX_PSU_DIMS[0] / 2 - PSU_FLOOR_VENT_HOLE_SIZE / 2, PSU_POSITION[1] + ATX_PSU_DIMS[1] / 2 - PSU_FLOOR_VENT_HOLE_SIZE / 2, RACK_FLOOR_THICKNESS];
 
 // through holes
 THcld  = 0.4; // dia clearance for the bolt
@@ -165,3 +196,6 @@ NPclk = 0.1; // clearance aditional to nominal key width
 // nutcatch sidecut
 NSclh = 0.2; // height clearance
 NSclsl = 0.2; // slot width clearance
+
+HONEYCOMB_DIAMETER = 12;
+HONEYCOMB_SIZE = 1;

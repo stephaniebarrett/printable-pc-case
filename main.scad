@@ -103,3 +103,9 @@ else if (DRAW_HDD_CAGE == 4)
     cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
     translate([cageX, cageY, RACK_FLOOR_THICKNESS]) rotate([0,0,90]) draw_hdd_cage("ssd",true);
 }
+else if (DRAW_HDD_CAGE == 5)
+{
+    cageX = RACK_WALL_THICKNESS + HDD_X_OFFSET;
+    cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
+    translate([cageX, cageY, RACK_FLOOR_THICKNESS]) draw_hdd_cage_vertical("hdd", 3);
+}
