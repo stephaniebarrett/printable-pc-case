@@ -7,6 +7,12 @@ The goal of this project is to create [OpenSCAD](https://openscad.org/) modules 
 
 ![Chassis Rendering](render.png "Chassis Rendering")
 
+## Usage
+export.bat [options] main.scad
+Allowed options:
+	-t arg		Specifies the type of file to export: stl, png (may be used multiple times)
+	-m arg		Specifies the type of model to export: cage, joinery, rack (may be used multiple times)
+
 ## Modules
 Many of the modules approximate the physical dimensions of various PC components. These are used to estimate positions and clearances of all the printable parts. Most of the dimensions were pulled from spec sheets online, and the rest were measured from physical pc hardware.
 ### mainboard.scad
@@ -29,9 +35,8 @@ On Windows, run 'exportAll.bat' to export all of the printable sections, using m
 
 ## TODO
 - design the top panel
-- refine drive cage sizing & tolerances
 - support PCI expansion cards in the rear wall
 - support other mainboard specs
 - support other PSU specs
 - support various rack depth and height configurations
-- add export script for non-windows machines and provide options to export a subset of parts
+- add export script for non-windows machines and refine options to export a subset of parts
