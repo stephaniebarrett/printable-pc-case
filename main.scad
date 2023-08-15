@@ -10,43 +10,9 @@ use <fan.scad>
 // Case Components
 use <rack.scad>
 
-DRAW_GHOSTS = false;
 DRAW_RACK = 0;
 DRAW_JOINERY = 0;
 DRAW_HDD_CAGE = 0;
-
-if (DRAW_GHOSTS)
-{
-    // DRAW GHOST MAINBOARD
-    #translate(MB_POSITION) draw_mATX_mainboard();
-    // DRAW GHOST PSU
-    #translate(PSU_POSITION) draw_ATX_psu();
-    // DRAW GHOST FRONT FANS
-    frontFanPosZ = (RACK_OUTER_DIMS[2] - FAN_SIZE_FRONT) / 2;
-    for (i = [0:2])
-    {
-        frontFanPosX = (RACK_OUTER_DIMS[0] / 3) * (i + .5) - FAN_SIZE_FRONT / 2;
-        #translate([frontFanPosX, RACK_WALL_THICKNESS, frontFanPosZ]) draw_fan(FAN_SIZE_FRONT, FAN_SIZE_FRONT, FAN_DEPTH);
-    }
-    // DRAW GHOST REAR FANS
-    rearFanPosX = MB_POSITION[0] + MB_IO_CUTOUT_OFFSET_X - mATX_xOFFSET + MB_IO_CUTOUT_DIMS[0]/2 - FAN_SIZE_REAR/2;
-    rearFanPosY = RACK_OUTER_DIMS[1] - RACK_WALL_THICKNESS - FAN_DEPTH;
-    rearFanPosZ = PSU_POSITION[2] + ATX_PSU_DIMS[2] - FAN_SIZE_REAR;
-    for (i = [-1:1])
-    {
-        #translate([rearFanPosX+((FAN_SIZE_REAR+20)*i), rearFanPosY, rearFanPosZ]) draw_fan(FAN_SIZE_REAR,FAN_SIZE_REAR,FAN_DEPTH);
-    }
-    // DRAW GHOST HDDs
-    for (i = [0:3])
-    {
-        x = RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET;
-        y = RACK_WALL_THICKNESS + HDD_CAGE_PILLAR_DIMS[1] + HDD_CAGE_BUFFER_X / 2 + HDD_Y_OFFSET;
-        z = RACK_FLOOR_THICKNESS + i * HDD_35_CAGE_SHELF_SPACING + HDD_35_CAGE_SHELF_DIMS[2];
-        #translate([x, y, z]) rotate([0,0,90]) draw_hdd_35();
-    }
-}
-
-
 
 if (DRAW_RACK == 1)
     draw_left_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
@@ -108,4 +74,13 @@ else if (DRAW_HDD_CAGE == 5)
     cageX = RACK_WALL_THICKNESS + HDD_X_OFFSET;
     cageY = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
     translate([cageX, cageY, RACK_FLOOR_THICKNESS]) draw_hdd_cage_vertical("hdd", 3);
+}
+else
+{
+    draw_left_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
+    draw_center_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
+    draw_right_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
+    draw_left_rear(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
+    draw_center_rear(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
+    draw_right_rear(NUMBER_OF_RACK_UNITS,RACK_DEPTH);
 }
