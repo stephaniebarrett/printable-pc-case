@@ -4,6 +4,7 @@ The goal of this project is to create [OpenSCAD](https://openscad.org/) modules 
 ## Requirements
 - OpenSCAD
 - [nutsnbolts](https://github.com/JohK/nutsnbolts) library for fasteners.
+- honeycomb library for the honeycomb texture used on fan openings.
 
 ![Chassis Rendering](render.png "Chassis Rendering")
 
@@ -36,7 +37,7 @@ On Windows, run 'exportAll.bat' to export all of the printable sections, using m
 ## TODO
 - design the top panel
 - support PCI expansion cards in the rear wall
-- support other mainboard specs
-- support other PSU specs
+- support other mainboard formats (currently only micro ATX in 2 configurations and ATX in 1 configuration).
+- support other PSU formats (currently only ATX in 2 configurations).
 - support various rack depth and height configurations
 - add export script for non-windows machines and refine options to export a subset of parts
