@@ -32,9 +32,6 @@ Many of the modules approximate the physical dimensions of various PC components
 ### main.scad
 - main script interface; has some variables to control which printable part to render.
 
-## Exporting .stl Files
-On Windows, run 'exportAll.bat' to export all of the printable sections, using main.scad. This can be very resource intensive on systems with limited CPU cores.
-
 ## TODO
 - design the top panel
 - support PCI expansion cards in the rear wall
