@@ -19,6 +19,7 @@ USE_HEATSETS = true;
         - 2.5" (7 disks) OR 3.5" (3 disks) drive cage front left
 */
 CASE_CONFIGURATION = 1;
+USE_HEX_FILL = 0;
 
 MOUNTING_SCREW_TYPE = "M3x10";
 M3x10HeadHeight=_get_head_height(MOUNTING_SCREW_TYPE);

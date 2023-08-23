@@ -426,9 +426,12 @@ module draw_psu_supports()
             cube([MB_POSITION[0]-RACK_WALL_THICKNESS-COMPONENT_GAP/3, RACK_MODULE_JOINING_PILLAR_DIMS[1]/2, PSU_POSITION[2]-RACK_FLOOR_THICKNESS]);
             translate([2,-0.5,0]) cube([MB_POSITION[0]-RACK_WALL_THICKNESS-COMPONENT_GAP/3-4, RACK_MODULE_JOINING_PILLAR_DIMS[1]/2+1, PSU_POSITION[2]-RACK_FLOOR_THICKNESS-2]);
         }
-        translate([RACK_MODULE_JOINING_PILLAR_DIMS[0], RACK_DEPTH-RACK_WALL_THICKNESS+RACK_MODULE_JOINING_PILLAR_DIMS[1]/2, RACK_FLOOR_THICKNESS]) rotate([90,0,0]) linear_extrude(RACK_MODULE_JOINING_PILLAR_DIMS[1])
+        if (USE_HEX_FILL)
         {
-            honeycomb(MB_POSITION[0]-RACK_WALL_THICKNESS-COMPONENT_GAP/3, PSU_POSITION[2]-RACK_FLOOR_THICKNESS, HONEYCOMB_DIAMETER, HONEYCOMB_SIZE);
+        translate([RACK_MODULE_JOINING_PILLAR_DIMS[0], RACK_DEPTH-RACK_WALL_THICKNESS+RACK_MODULE_JOINING_PILLAR_DIMS[1]/2, RACK_FLOOR_THICKNESS]) rotate([90,0,0]) linear_extrude(RACK_MODULE_JOINING_PILLAR_DIMS[1])
+            {
+                honeycomb(MB_POSITION[0]-RACK_WALL_THICKNESS-COMPONENT_GAP/3, PSU_POSITION[2]-RACK_FLOOR_THICKNESS, HONEYCOMB_DIAMETER, HONEYCOMB_SIZE);
+            }
         }
 
         translate([RACK_WALL_THICKNESS,RACK_DEPTH-RACK_WALL_THICKNESS-ATX_PSU_DIMS[1]+RACK_MODULE_JOINING_PILLAR_DIMS[1]/2,RACK_FLOOR_THICKNESS])
@@ -438,12 +441,15 @@ module draw_psu_supports()
                 cube([MB_POSITION[0]-RACK_WALL_THICKNESS-COMPONENT_GAP/3, RACK_MODULE_JOINING_PILLAR_DIMS[1]/2, PSU_POSITION[2]-RACK_FLOOR_THICKNESS]);
                 translate([2,-.5,0]) cube([MB_POSITION[0]-RACK_WALL_THICKNESS-COMPONENT_GAP/3-4, RACK_MODULE_JOINING_PILLAR_DIMS[1]/2+1, PSU_POSITION[2]-RACK_FLOOR_THICKNESS-2]);
             }
-            translate([-2,RACK_MODULE_JOINING_PILLAR_DIMS[1]/2,-2]) rotate([90,0,0]) linear_extrude(RACK_MODULE_JOINING_PILLAR_DIMS[1]/2)
+            if (USE_HEX_FILL)
             {
-                honeycomb(MB_POSITION[0]-RACK_WALL_THICKNESS-COMPONENT_GAP/3, PSU_POSITION[2]-RACK_FLOOR_THICKNESS,PSU_POSITION[2]-RACK_FLOOR_THICKNESS+4,2);
+                translate([-2,RACK_MODULE_JOINING_PILLAR_DIMS[1]/2,-2]) rotate([90,0,0]) linear_extrude(RACK_MODULE_JOINING_PILLAR_DIMS[1]/2)
+                {
+                    honeycomb(MB_POSITION[0]-RACK_WALL_THICKNESS-COMPONENT_GAP/3, PSU_POSITION[2]-RACK_FLOOR_THICKNESS,PSU_POSITION[2]-RACK_FLOOR_THICKNESS+4,2);
+                }
             }
-
         }
+        
     }
 }
 
@@ -638,21 +644,24 @@ module draw_rack_front(rackUnits, depth, fanSize, fanDepth)
     }
 
     // honeycomb
-    if (fanSize > 0)
+    if (USE_HEX_FILL)
     {
-        intersection()
+        if (fanSize > 0)
         {
-            translate([0,RACK_WALL_THICKNESS,0]) rotate([90,0,0]) linear_extrude(RACK_WALL_THICKNESS)
+            intersection()
             {
-                honeycomb(RACK_OUTER_DIMS[0], RACK_OUTER_DIMS[2], HONEYCOMB_DIAMETER, HONEYCOMB_SIZE);
-            }
-            z = rack_outer_dims[2] / 2 - fanSize / 2;
-            for (i = [0 : 2])
-            {
-                x = (rack_outer_dims[0] / 3) * i + fanSize / 2 - RACK_WALL_THICKNESS;
-                translate([x,0,z]) union()
+                translate([0,RACK_WALL_THICKNESS,0]) rotate([90,0,0]) linear_extrude(RACK_WALL_THICKNESS)
                 {
-                    draw_fan_through_hole(fanSize, fanSize, fanDepth);
+                    honeycomb(RACK_OUTER_DIMS[0], RACK_OUTER_DIMS[2], HONEYCOMB_DIAMETER, HONEYCOMB_SIZE);
+                }
+                z = rack_outer_dims[2] / 2 - fanSize / 2;
+                for (i = [0 : 2])
+                {
+                    x = (rack_outer_dims[0] / 3) * i + fanSize / 2 - RACK_WALL_THICKNESS;
+                    translate([x,0,z]) union()
+                    {
+                        draw_fan_through_hole(fanSize, fanSize, fanDepth);
+                    }
                 }
             }
         }
@@ -737,6 +746,7 @@ module draw_rack_rear(rackUnits, depth)
             }
         }
         // honeycomb
+        if (USE_HEX_FILL)
         {
             x = MB_POSITION[0] + MB_IO_CUTOUT_OFFSET_X  - mATX_xOFFSET + MB_IO_CUTOUT_DIMS[0]/2 - FAN_SIZE_REAR/2;
             y = RACK_OUTER_DIMS[1];
@@ -827,6 +837,7 @@ module draw_rack_rear(rackUnits, depth)
             }
         }
         // honeycomb
+        if (USE_HEX_FILL)
         {
             x = MB_POSITION[0] + MB_IO_CUTOUT_OFFSET_X + MB_IO_CUTOUT_DIMS[0]/2 - FAN_SIZE_REAR/2;
             y = RACK_OUTER_DIMS[1];
