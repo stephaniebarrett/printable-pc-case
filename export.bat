@@ -9,12 +9,15 @@ echo Usage: %~nx0 [options] input.scad
 echo Allowed options:
 echo  -t arg		Specifies the type of file to export: stl, png (may be used multiple times)
 echo  -m arg		Specifies the type of model to export: cage, joinery, rack (may be used multiple times)
+echo  -h			Specifies the use of honeycomb fill for the fan grills (default is 0)
 echo.
 goto :EOF
 
 :switches
 rem make sure variables are undefined
-for %%I in (png stl cage joinery rack input switch valid options) do set "%%I="
+for %%I in (png stl cage joinery rack input switch valid options hexfill) do set "%%I="
+
+set "hexfill=0"
 
 rem loop through all arguments
 for %%I in (%*) do (
@@ -28,6 +31,8 @@ for %%I in (%*) do (
 			if /i "%%~I"=="cage" set cage=true
 			if /i "%%~I"=="joinery" set joinery=true
 			if /i "%%~I"=="rack" set rack=true
+		) else if /i "!switch:~1!"=="H"  (
+			set hexfill=%%I
 		)
 
 		rem clear switch variable
@@ -39,7 +44,7 @@ for %%I in (%*) do (
 			set "switch=%%~I"
 
 			rem if this is a valid switch
-            for %%x in (T M) do (
+            for %%x in (T M H) do (
                 if /i "!switch:~1!"=="%%x" set "valid=true"
             )
 
@@ -92,7 +97,7 @@ if defined rack (
 		FOR /l %%G IN (1,1,6) DO (
 			if defined png set options=-o %pngPath%\config%%I\rack%%G.png
 			if defined stl set options=!options! -o %stlPath%\config%%I\rack%%G.stl
-			call openscad !options! -D DRAW_RACK=%%G -D CASE_CONFIGURATION=%%I %input%
+			call openscad !options! -D DRAW_RACK=%%G -D CASE_CONFIGURATION=%%I -D USE_HEX_FILL=!hexfill! %input%
 		)
 	)
 )
