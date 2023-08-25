@@ -7,6 +7,7 @@ The goal of this project is to create [OpenSCAD](https://openscad.org/) modules 
 - honeycomb library for the honeycomb texture used on fan openings.
 
 ![Chassis Rendering](render.png "Chassis Rendering")
+![Chassis Test Fit](testfit.jpg "Chassis Test Fit")
 
 ## Exporting
 ```
@@ -30,6 +31,7 @@ Many of the modules approximate the physical dimensions of various PC components
 ### rack.scad
 - 19", variable height measured in rack units (some testing is still required).
 - contains modules to cut up the rack into printable sections.
+- This is the place you want to make changes to the layout
 ### main.scad
 - main script interface; has some variables to control which printable part to render.
 
@@ -39,4 +41,10 @@ Many of the modules approximate the physical dimensions of various PC components
 - support other mainboard formats (currently only micro ATX in 2 configurations and ATX in 1 configuration).
 - support other PSU formats (currently only ATX in 2 configurations).
 - support various rack depth and height configurations
+- add code comments
 - add export script for non-windows machines
+
+## Notes
+While doing a full test print/fit, there were several issues with warping (especially the corner pieces) and cracking when transitioning from printing floor + walls to just the walls. However, they didn't seem to affect the build at all. The rear wall was the most fragile with fan/io/psu cutouts and some chunkier pieces to bolt sections together; I had one of those chunky pieces break off, and some issues with support material not cooperating while printing.
+
+I used a Prusa MK3S+ with a 0.6mm nozzle, 0.4mm layer height, 3 perimeters, 15% adaptive cubic infill, and recycled PETG.
