@@ -8,12 +8,13 @@ The goal of this project is to create [OpenSCAD](https://openscad.org/) modules 
 
 ![Chassis Rendering](render.png "Chassis Rendering")
 
-## Usage
+## Exporting
 ```
 export.bat [options] main.scad
 Allowed options:
 	-t arg		Specifies the type of file to export: stl, png (may be used multiple times)
 	-m arg		Specifies the type of model to export: cage, joinery, rack (may be used multiple times)
+	-h arg		0 will remove the honeycomb fill, 1 will keep it.
 ```
 ## Modules
 Many of the modules approximate the physical dimensions of various PC components. These are used to estimate positions and clearances of all the printable parts. Most of the dimensions were pulled from spec sheets online, and the rest were measured from physical pc hardware.
@@ -38,4 +39,4 @@ Many of the modules approximate the physical dimensions of various PC components
 - support other mainboard formats (currently only micro ATX in 2 configurations and ATX in 1 configuration).
 - support other PSU formats (currently only ATX in 2 configurations).
 - support various rack depth and height configurations
-- add export script for non-windows machines and refine options to export a subset of parts
+- add export script for non-windows machines
