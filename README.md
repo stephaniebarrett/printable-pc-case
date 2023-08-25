@@ -1,6 +1,12 @@
 # 3D Printable Rackmount PC/Server Case using OpenScad.
 ## WIP
 The goal of this project is to create [OpenSCAD](https://openscad.org/) modules to facilitate the design of a modular rack-mountable computer chassis. It has been heavily inspired by https://www.printables.com/model/485778-mini-itx-server-rackmount-2u 
+
+## Notes
+While doing a full test print/fit, there were several issues with warping (especially the corner pieces) and cracking when transitioning from printing floor + walls to just the walls. However, they didn't seem to affect the build at all. The rear wall was the most fragile with fan/io/psu cutouts and some chunkier pieces to bolt sections together; I had one of those chunky pieces break off, and some issues with support material not cooperating while printing. The honeycomb fill needs some work, while nocking out its support material, most of the honeycomb broke off on 2 of the 3 fan openings.  The 3U test case is currently mounted in my rack with with x4 Rack Studs in the center of the first and third 'U'.
+
+I used a Prusa MK3S+ with a 0.6mm nozzle, 0.4mm layer height, 3 perimeters, 15% adaptive cubic infill, and recycled PETG.
+
 ## Requirements
 - OpenSCAD
 - [nutsnbolts](https://github.com/JohK/nutsnbolts) library for fasteners.
@@ -43,8 +49,3 @@ Many of the modules approximate the physical dimensions of various PC components
 - support various rack depth and height configurations
 - add code comments
 - add export script for non-windows machines
-
-## Notes
-While doing a full test print/fit, there were several issues with warping (especially the corner pieces) and cracking when transitioning from printing floor + walls to just the walls. However, they didn't seem to affect the build at all. The rear wall was the most fragile with fan/io/psu cutouts and some chunkier pieces to bolt sections together; I had one of those chunky pieces break off, and some issues with support material not cooperating while printing.
-
-I used a Prusa MK3S+ with a 0.6mm nozzle, 0.4mm layer height, 3 perimeters, 15% adaptive cubic infill, and recycled PETG.
