@@ -8,7 +8,7 @@ use <hdd.scad>
 use <fan.scad>
 
 RACK_OUTER_WIDTH = 441;
-RACK_OUTER_DEPTH = 440;
+RACK_OUTER_DEPTH = 400;
 RACK_OUTER_HEIGHT = get_rack_height(4);
 RACK_FLOOR_DIM = 5;
 RACK_ROOF_DIM = 5;
@@ -94,15 +94,16 @@ module draw_mainboard_grid_piece_y(p1, p2)
             {
                 difference()
                 {
-                    translate([ATX_PSU_POS[0]+ATX_PSU_DIMS[2]+1,RACK_FRONT_DIM+FAN_DEPTH+BUFFER+HDD_35_DIMS[1]/2-5,RACK_FLOOR_DIM-11]) rotate([-15,0,0]) scale([1,1.75,1]) rotate([0,90,0]) cylinder(h=RACK_OUTER_WIDTH-RACK_WALL_DIM*2-BUFFER*2-ATX_PSU_DIMS[2],r=hddHeight+10,$fn=256);
-                    translate([0,-HDD_25_DIMS[1]/3,0]) draw_drives();
-                    translate([0,HDD_25_DIMS[1]/3,0]) draw_drives();
+                    translate([ATX_PSU_POS[0]+ATX_PSU_DIMS[2]+1,RACK_FRONT_DIM+FAN_DEPTH+BUFFER+HDD_35_DIMS[1]/2,RACK_FLOOR_DIM-20]) rotate([-25,0,0]) scale([1,2.51]) rotate([0,90,0]) cylinder(h=RACK_OUTER_WIDTH-RACK_WALL_DIM*2-BUFFER*2-ATX_PSU_DIMS[2],r=hddHeight,$fn=256);
+                    translate([-0.1,-0.1,0]) draw_drives();
+                    translate([0.1,0.1,0]) draw_drives();
+                    draw_drives();
                 }
                 translate([ATX_PSU_POS[0]+ATX_PSU_DIMS[2],RACK_FRONT_DIM+FAN_DEPTH,RACK_FLOOR_DIM]) cube([RACK_OUTER_WIDTH-RACK_WALL_DIM*2-BUFFER*2-ATX_PSU_DIMS[2]+2,HDD_25_DIMS[1]*1.5,hddHeight+5]);
             }
             // psu_supports
             translate([RACK_WALL_DIM+BUFFER+5,RACK_FRONT_DIM+10,RACK_FLOOR_DIM]) cube([10,ATX_PSU_DIMS[1]-10,psuHeight]);
-            translate([RACK_WALL_DIM+BUFFER+ATX_PSU_DIMS[2]-15,RACK_FRONT_DIM+31,RACK_FLOOR_DIM]) cube([20,ATX_PSU_DIMS[1]-31,psuHeight]);
+            translate([RACK_WALL_DIM+BUFFER+ATX_PSU_DIMS[2]-15,RACK_FRONT_DIM+31,RACK_FLOOR_DIM]) cube([20,ATX_PSU_DIMS[1]-72,psuHeight]);
         }
             draw_left_side_fasteners($fn=64);
             draw_right_side_fasteners($fn=64);
@@ -168,7 +169,7 @@ if (PART == 0 || PART == 3)
 }
 
 // RACK ROOF
-if (PART == 0 || PART == 4)
+//if (PART == 0 || PART == 4)
 {
     difference()
     {
@@ -178,6 +179,9 @@ if (PART == 0 || PART == 4)
             // wall mounting points
             translate([RACK_WALL_DIM,RACK_FRONT_DIM+40,-10]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-50,10]);
             translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,-10]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-50,10]);
+            // hdd bracket
+            //translate([10,RACK_FRONT_DIM+40,-10]) cube([RACK_OUTER_WIDTH-20,20,10]);
+            translate([RACK_WALL_DIM,yDrivePos-10,-20]) cube([RACK_OUTER_WIDTH-RACK_WALL_DIM*2-10,20,20]);
         }
         draw_left_side_fasteners($fn=64);
         draw_right_side_fasteners($fn=64);
@@ -201,7 +205,7 @@ if (PART == 0 || PART == 5)
 }
 
 // RACK FRONT
-//if (PART == 0 || PART == 6)
+if (PART == 0 || PART == 6)
 {
     draw_front_panel_section(SECTION);
     //draw_front_panel_exploded();
@@ -235,6 +239,9 @@ for (i = [80,120,140])
     translate([xFan2,5,get_rack_height(4)/2-i/2]) translate([-i/2,0,0]) draw_fan(i,i,FAN_DEPTH);
 }
 */
+//translate([RACK_WALL_DIM+BUFFER,0,RACK_FLOOR_DIM+psuHeight]) translate([0,RACK_FRONT_DIM+ATX_PSU_DIMS[1],0]) rotate([0,-90,180]) translate([ATX_PSU_DIMS[0],ATX_PSU_DIMS[1],0]) rotate([0,0,180]) draw_ATX_psu();
+
+draw_drives();
 
 module draw_front_panel_exploded()
 {
@@ -443,15 +450,13 @@ module draw_drives()
 {
     for (i = [0 : 3])
     {
-        translate([xFan1-70+HDD_35_DIMS[2]+hddSpacing*i,yDrivePos,hddHeight]) rotate([0,-90,0]) draw_hdd("hdd");
-        translate([xFan1-70+HDD_25_DIMS[2]*2+ssdSpacing*i,yDrivePos,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-HDD_25_DIMS[0]-BUFFER]) rotate([0,-90,0]) draw_hdd("ssd");
-        translate([xFan1-70+HDD_25_DIMS[2]*2+ssdSpacing*i,yDrivePos,RACK_FLOOR_DIM+BUFFER]) rotate([0,-90,0]) draw_hdd("ssd");
+        translate([xFan1-70+HDD_35_DIMS[2]+hddSpacing*i,yDrivePos,RACK_OUTER_HEIGHT/2+HDD_35_DIMS[1]/2]) rotate([-90,0,0]) rotate([0,-90,0]) draw_hdd("hdd");
+        translate([xFan1-70+HDD_25_DIMS[2]*2+ssdSpacing*i,yDrivePos,RACK_FLOOR_DIM+HDD_25_DIMS[1]]) rotate([-90,0,0]) rotate([0,-90,0]) draw_hdd("ssd");
     }
     for (i = [0 : 3])
     {
-        translate([xFan2-70+HDD_35_DIMS[2]+hddSpacing*i,yDrivePos,hddHeight]) rotate([0,-90,0]) draw_hdd("hdd");
-        translate([xFan2-70+HDD_25_DIMS[2]*2+ssdSpacing*i,yDrivePos,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-HDD_25_DIMS[0]-BUFFER]) rotate([0,-90,0]) draw_hdd("ssd");
-        translate([xFan2-70+HDD_25_DIMS[2]*2+ssdSpacing*i,yDrivePos,RACK_FLOOR_DIM+BUFFER]) rotate([0,-90,0]) draw_hdd("ssd");
+        translate([xFan2-70+HDD_35_DIMS[2]+hddSpacing*i,yDrivePos,RACK_OUTER_HEIGHT/2+HDD_35_DIMS[1]/2]) rotate([-90,0,0]) rotate([0,-90,0]) draw_hdd("hdd");
+        translate([xFan2-70+HDD_25_DIMS[2]*2+ssdSpacing*i,yDrivePos,RACK_FLOOR_DIM+HDD_25_DIMS[1]]) rotate([-90,0,0]) rotate([0,-90,0]) draw_hdd("ssd");
     }
 }
 
