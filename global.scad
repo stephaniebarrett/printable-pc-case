@@ -1,5 +1,5 @@
-include <externals/nutsnbolts/cyl_head_bolt.scad>;
-include <honeycomb.scad>
+include <externals/nutsnbolts/cyl_head_bolt.scad>
+include <externals/honeycomb/honeycomb.scad>
 include <utility.scad>
 
 function INCH_TO_MM(inch) = inch * 25.4;
