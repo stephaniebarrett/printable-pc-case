@@ -113,6 +113,7 @@ if (ROOF == 1)
 PCI_CUTOUT_DIMS = [16,RACK_BACK_DIM+EPSILON*2,94];
 PCI_CUTOUT_X = [14.17,34.49,54.81,75.13,95.45,115.77,136.09];
 
+/*
 intersection()
 {
     translate([0,RACK_OUTER_DEPTH,0]) rotate([90,0,0]) linear_extrude(RACK_FRONT_DIM) honeycomb(RACK_OUTER_WIDTH, RACK_OUTER_HEIGHT,10,2);
@@ -123,62 +124,72 @@ intersection()
     }
 }
 
+*/
         //translate([RACK_WALL_DIM+BUFFER+5,RACK_OUTER_DEPTH-RACK_BACK_DIM-FAN_DEPTH/2,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) draw_fan_mounting_holes(80,FAN_DEPTH);
         //translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-85,RACK_OUTER_DEPTH-RACK_BACK_DIM-FAN_DEPTH/2,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) draw_fan_mounting_holes(80,FAN_DEPTH);
 
 // RACK BACK
 if (BACK == 1)
 {
-    difference()
+    color("lightblue") union()
     {
-        union()
+        difference()
         {
-            for(x=[RACK_WALL_DIM+BUFFER+5,RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-85])
+            union()
             {
-                translate([x,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) draw_fan_mounting_holes_offset(80,RACK_BACK_DIM,5);
-            }
-            difference()
-            {
+                // draw_fan_mounting_holes_offset
+                translate([RACK_WALL_DIM+BUFFER+5,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) draw_fan_mounting_holes_offset(80,RACK_BACK_DIM,5);
+                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-85,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) draw_fan_mounting_holes_offset(80,RACK_BACK_DIM,5);
+                
                 intersection()
                 {
-                    translate([0,RACK_OUTER_DEPTH,0]) rotate([90,0,0]) linear_extrude(RACK_FRONT_DIM) honeycomb(RACK_OUTER_WIDTH, RACK_OUTER_HEIGHT,10,2);
+                    difference()
+                    {
+                        // honeycomb
+                        translate([0,RACK_OUTER_DEPTH,0]) rotate([90,0,0]) linear_extrude(RACK_FRONT_DIM) honeycomb(RACK_OUTER_WIDTH, RACK_OUTER_HEIGHT,10,2);
+
+                    }
                     union()
                     {
+                        // draw_fan_through_hole
                         translate([RACK_WALL_DIM+BUFFER+5,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,ATX_MB_POS[2]+8]) cube([80,RACK_BACK_DIM+EPSILON*2,get_fan_spacing(80)+58]);
                         translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-157,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) cube([152,RACK_BACK_DIM+EPSILON*2,80]);
                     }
                 }
             }
+            // draw_fan_mounting_holes
+            translate([RACK_WALL_DIM+BUFFER+5,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) draw_fan_mounting_holes(80,RACK_BACK_DIM);
+            translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-85,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) draw_fan_mounting_holes(80,RACK_BACK_DIM);
         }
-    }
-    difference()
-    {
-        color("lightblue") union()
+        difference()
         {
-            translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_FLOOR_DIM]) cube([RACK_OUTER_WIDTH-RACK_WALL_DIM*2,RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
-            translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-10,RACK_FLOOR_DIM]) cube([10,10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
-            translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-10,RACK_FLOOR_DIM]) cube([10,10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
-            translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+20]) cube([10,20,10]);
-            translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+20]) cube([10,20,10]);
-            translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,10]);
-            translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,10]);
-            translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5]) cube([10,10,10]);
-            translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5]) cube([10,10,10]);
+            union()
+            {
+                translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_FLOOR_DIM]) cube([RACK_OUTER_WIDTH-RACK_WALL_DIM*2,RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
+                translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-10,RACK_FLOOR_DIM]) cube([10,10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
+                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-10,RACK_FLOOR_DIM]) cube([10,10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
+                translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+20]) cube([10,20,10]);
+                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+20]) cube([10,20,10]);
+                translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,10]);
+                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,10]);
+                translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5]) cube([10,10,10]);
+                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5]) cube([10,10,10]);
+            }
+
+            for(x=PCI_CUTOUT_X)
+            {
+                translate([x,0,ATX_MB_POS[2]+8]) translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,0]) cube(PCI_CUTOUT_DIMS);
+            }
+            translate([ATX_MB_POS[0],0,ATX_MB_POS[2]+109.72]) translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,0]) cube([150,PCI_CUTOUT_DIMS[1],20]);
+            
+            translate([RACK_WALL_DIM+BUFFER+5,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,ATX_MB_POS[2]+8]) cube([80,RACK_BACK_DIM+EPSILON*2,get_fan_spacing(80)+58]);
+            translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-157,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) cube([152,RACK_BACK_DIM+EPSILON*2,80]);
+
+
+            draw_mb_io_cutout();
+            draw_left_side_fasteners($fn=64);
+            draw_right_side_fasteners($fn=64);
         }
-
-        for(x=PCI_CUTOUT_X)
-        {
-            translate([x,0,ATX_MB_POS[2]+8]) translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,0]) cube(PCI_CUTOUT_DIMS);
-        }
-        translate([ATX_MB_POS[0],0,ATX_MB_POS[2]+109.72]) translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,0]) cube([150,PCI_CUTOUT_DIMS[1],20]);
-        
-        translate([RACK_WALL_DIM+BUFFER+5,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,ATX_MB_POS[2]+8]) cube([80,RACK_BACK_DIM+EPSILON*2,get_fan_spacing(80)+58]);
-        translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-157,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) cube([152,RACK_BACK_DIM+EPSILON*2,80]);
-
-
-        draw_mb_io_cutout();
-        draw_left_side_fasteners($fn=64);
-        draw_right_side_fasteners($fn=64);
     }
 }
 
