@@ -1,4 +1,4 @@
-# 3D Printable Rackmount PC/Server Case using OpenScad.
+# 3D Printable Rackmount PC/Server Case using OpenScad V2.
 ## WIP
 The goal of this project was to create [OpenSCAD](https://openscad.org/) modules to facilitate the design of a modular rack-mountable computer chassis. It has been heavily inspired by https://www.printables.com/model/485778-mini-itx-server-rackmount-2u But going through the testing process, it has become less of modules to build cases, and more about supporting the case that I'm currently building.
 ## Requirements
