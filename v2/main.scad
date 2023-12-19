@@ -45,16 +45,16 @@ angle = 15;
 board_thickness = 10;
 pin_width = pin_width(tail_width = tail_width, tail_count=tail_count, board_width=board_width);
 
-FRONT = 1;
-LEFT = 1;
-RIGHT = 1;
-FLOOR = 1;
+FRONT = 0;
+LEFT = 0;
+RIGHT = 0;
+FLOOR = 0;
 ROOF = 0;
 BACK = 1;
-JOINERY = 1;
+JOINERY = 0;
 
 EXPLODED = 0;
-SECTION = 0;
+SECTION = 2;
 
 MAINBOARD = 0;
 FANS = 0;
@@ -121,7 +121,7 @@ if (BACK == 1)
     if (EXPLODED == 1)
         draw_back_panel_exploded();
     else
-        draw_back_panel_section(0);
+        draw_back_panel_section(SECTION);
 }
 
 module draw_back_panel_exploded()
@@ -276,7 +276,7 @@ if (FRONT == 1)
     if (EXPLODED == 1)
         draw_front_panel_exploded();
     else
-        draw_front_panel_section(0);
+        draw_front_panel_section(SECTION);
 }
 
 // JOINERY
