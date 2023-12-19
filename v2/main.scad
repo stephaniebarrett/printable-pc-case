@@ -47,11 +47,11 @@ pin_width = pin_width(tail_width = tail_width, tail_count=tail_count, board_widt
 
 FRONT = 1;
 LEFT = 1;
-RIGHT = 0;
+RIGHT = 1;
 FLOOR = 1;
 ROOF = 0;
 BACK = 1;
-JOINERY = 0;
+JOINERY = 1;
 
 EXPLODED = 0;
 SECTION = 0;
@@ -106,6 +106,7 @@ if (ROOF == 1)
         draw_left_side_fasteners($fn=64);
         draw_right_side_fasteners($fn=64);
         draw_front_fasteners($fn=64);
+        draw_back_fasteners($fn=64);
     }
 }
 
@@ -118,20 +119,20 @@ PCI_CUTOUT_X = [14.17,34.49,54.81,75.13,95.45,115.77,136.09];
 if (BACK == 1)
 {
     if (EXPLODED == 1)
-        draw_back_exploded();
+        draw_back_panel_exploded();
     else
-        draw_back_section(0);
+        draw_back_panel_section(0);
 }
 
-module draw_back_exploded()
+module draw_back_panel_exploded()
 {
     for (i = [0:2])
     {
-        translate([10*i,0,0]) draw_back_section(i+1);
+        translate([10*i,0,0]) draw_back_panel_section(i+1);
     }
 }
 
-module draw_back_section(section=0)
+module draw_back_panel_section(section=0)
 {
     intersection()
     {
@@ -189,13 +190,13 @@ module draw_back_section(section=0)
                 // cutout slits for pci retainment bracket screws
                 hull()
                 {
-                    translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2+4.151+150.5/4,RACK_OUTER_DEPTH+EPSILON,ATX_MB_POS[2]+MB_IO_CUTOUT_OFFSET_Z+112+35]) rotate([90,0,0]) cylinder(h=RACK_BACK_DIM+3,d=_get_head_dia("M3x8"));
-                    translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2+4.151+150.5/4,RACK_OUTER_DEPTH+EPSILON,ATX_MB_POS[2]+MB_IO_CUTOUT_OFFSET_Z+112+20]) rotate([90,0,0]) cylinder(h=RACK_BACK_DIM+3,d=_get_head_dia("M3x8"));
+                    translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2+4.151+150.5/4,RACK_OUTER_DEPTH+EPSILON,ATX_MB_POS[2]+MB_IO_CUTOUT_OFFSET_Z+112+35]) rotate([90,0,0]) cylinder(h=RACK_BACK_DIM+3,d=_get_head_dia("M3x8")+1);
+                    translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2+4.151+150.5/4,RACK_OUTER_DEPTH+EPSILON,ATX_MB_POS[2]+MB_IO_CUTOUT_OFFSET_Z+112+20]) rotate([90,0,0]) cylinder(h=RACK_BACK_DIM+3,d=_get_head_dia("M3x8")+1);
                 }
                 hull()
                 {
-                    translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2+4.151+150.5/4*3,RACK_OUTER_DEPTH+EPSILON,ATX_MB_POS[2]+MB_IO_CUTOUT_OFFSET_Z+112+35]) rotate([90,0,0]) cylinder(h=RACK_BACK_DIM+EPSILON*2,d=_get_head_dia("M3x8"));
-                    translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2+4.151+150.5/4*3,RACK_OUTER_DEPTH+EPSILON,ATX_MB_POS[2]+MB_IO_CUTOUT_OFFSET_Z+112+20]) rotate([90,0,0]) cylinder(h=RACK_BACK_DIM+EPSILON*2,d=_get_head_dia("M3x8"));
+                    translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2+4.151+150.5/4*3,RACK_OUTER_DEPTH+EPSILON,ATX_MB_POS[2]+MB_IO_CUTOUT_OFFSET_Z+112+35]) rotate([90,0,0]) cylinder(h=RACK_BACK_DIM+EPSILON*2,d=_get_head_dia("M3x8")+1);
+                    translate([ATX_MB_POS[0]-PCI_CUTOUT_DIMS[0]/2+4.151+150.5/4*3,RACK_OUTER_DEPTH+EPSILON,ATX_MB_POS[2]+MB_IO_CUTOUT_OFFSET_Z+112+20]) rotate([90,0,0]) cylinder(h=RACK_BACK_DIM+EPSILON*2,d=_get_head_dia("M3x8")+1);
                 }
 
                 // cutouts to be replaced by honeycomb
@@ -203,13 +204,15 @@ module draw_back_section(section=0)
                 translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-157,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-BUFFER-90]) cube([150,RACK_BACK_DIM+EPSILON*2,80]);
 
                 // cutouts for joinery
-                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-157-30.5,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-15]) cube([60+1,RACK_BACK_DIM/2+0.5,10+1]);
+                translate([RACK_WALL_DIM+BUFFER+87+152.65+6-30.5,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-15]) cube([60+1,RACK_BACK_DIM/2+0.5,10+1]);
+                translate([RACK_WALL_DIM+BUFFER+87+152.65+6-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-15]) cube([20+1,RACK_BACK_DIM/2+0.5,15+EPSILON]);
                 translate([RACK_WALL_DIM+BUFFER+85-30.5,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-15]) cube([60+1,RACK_BACK_DIM/2+0.5,10+1]);
-
+                translate([RACK_WALL_DIM+BUFFER+85-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-15]) cube([20+1,RACK_BACK_DIM/2+0.5,15+EPSILON]);
 
                 draw_mb_io_cutout();
                 draw_left_side_fasteners($fn=64);
                 draw_right_side_fasteners($fn=64);
+                draw_back_fasteners($fn=64);
                 
                 for(x=PCI_CUTOUT_X)
                 {
@@ -237,6 +240,28 @@ module draw_back_section(section=0)
     }
 }
 
+module draw_back_fasteners()
+{
+    length = 6;
+    headHeight = _get_head_height("M3x6");
+    headDiameter = _get_head_dia("M3x6");
+    nutHeight = _get_nut_height("M3x16");
+    
+    for(xOffset=[5:50/3:55])
+    {
+        translate([RACK_WALL_DIM+BUFFER+87+152.65+6-30+xOffset,RACK_OUTER_DEPTH+headHeight,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10]) rotate([-90,0,0]) hole_through("M3",l=length,h=headHeight);
+        translate([RACK_WALL_DIM+BUFFER+87+152.65+6-30+xOffset,RACK_OUTER_DEPTH-RACK_BACK_DIM+nutHeight-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10]) rotate([-90,0,0]) nutcatch_parallel("M3",clk=NPclk);
+
+        translate([RACK_WALL_DIM+BUFFER+87-32+xOffset,RACK_OUTER_DEPTH+headHeight,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10]) rotate([-90,0,0]) hole_through("M3",l=length,h=headHeight);
+        translate([RACK_WALL_DIM+BUFFER+87-32+xOffset,RACK_OUTER_DEPTH-RACK_BACK_DIM+nutHeight-EPSILON,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10]) rotate([-90,0,0]) nutcatch_parallel("M3",clk=NPclk);
+    }
+    translate([RACK_WALL_DIM+BUFFER+87+152.65+6,RACK_OUTER_DEPTH-RACK_BACK_DIM-5,RACK_OUTER_HEIGHT+EPSILON]) hole_through("M3",l=length,h=headHeight);
+    translate([RACK_WALL_DIM+BUFFER+87+152.65+6,RACK_OUTER_DEPTH-RACK_BACK_DIM-5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-5+nutHeight-EPSILON]) nutcatch_parallel("M3",clk=NPclk);
+
+    translate([RACK_WALL_DIM+BUFFER+85,RACK_OUTER_DEPTH-RACK_BACK_DIM-5,RACK_OUTER_HEIGHT+EPSILON]) hole_through("M3",l=length,h=headHeight);
+    translate([RACK_WALL_DIM+BUFFER+85,RACK_OUTER_DEPTH-RACK_BACK_DIM-5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-5+nutHeight-EPSILON]) nutcatch_parallel("M3",clk=NPclk);
+}
+
 module draw_mb_io_cutout()
 {
     //io cutout
@@ -257,6 +282,23 @@ if (FRONT == 1)
 // JOINERY
 if (JOINERY == 1)
 {
+    if (BACK == 1)
+    {
+        difference()
+        {
+            union()
+            {
+                translate([RACK_WALL_DIM+BUFFER+87+152.65+6-30,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-14.5]) cube([60,RACK_BACK_DIM/2-0.5,10]);
+                translate([RACK_WALL_DIM+BUFFER+85-30,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-14.5]) cube([60,RACK_BACK_DIM/2-0.5,10]);
+                
+                translate([RACK_WALL_DIM+BUFFER+87+152.65+6-9.5,RACK_OUTER_DEPTH-RACK_BACK_DIM-10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-5]) cube([20,RACK_BACK_DIM/2+10,5]);
+                translate([RACK_WALL_DIM+BUFFER+85-9.5,RACK_OUTER_DEPTH-RACK_BACK_DIM-10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-5]) cube([20,RACK_BACK_DIM/2+10,5]);
+
+            }
+            draw_back_fasteners($fn=64);
+        }
+        
+    }
     if (FRONT == 1)
     {
         difference()
@@ -711,6 +753,8 @@ module draw_mainboard_grid_piece_y(p1, p2)
     translate(ATX_MB_POS) translate([get_mainboard_mounting_hole_coord(p2, ATX_MB_DIMS, ATX_HOLES)[0]-2.5,get_mainboard_mounting_hole_coord(p2, ATX_MB_DIMS, ATX_HOLES)[1]-2.5,-.25]) cube([5,yLen,2]);
 }
 
+
+
 module draw_front_fasteners()
 {
     yOffset = -2;
@@ -739,14 +783,14 @@ module draw_front_fasteners()
     translate([xJ2+30-3.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5]) hole_through("M3",l=16,h=headHeight);
     translate([xJ2+30-3.5,RACK_FRONT_DIM+5,nutHeight]) nutcatch_parallel("M3",clk=NPclk);
     // roof
-    translate([xJ1-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10.5]) rotate([180,0,0]) hole_through("M3",l=16,h=headHeight);
-    translate([xJ1-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-nutHeight]) rotate([180,0,0]) nutcatch_parallel("M3",clk=NPclk);
-    translate([xJ1+30-3.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10.5]) rotate([180,0,0]) hole_through("M3",l=16,h=headHeight);
-    translate([xJ1+30-3.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-nutHeight]) rotate([180,0,0]) nutcatch_parallel("M3",clk=NPclk);
-    translate([xJ2-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10.5]) rotate([180,0,0]) hole_through("M3",l=16,h=headHeight);
-    translate([xJ2-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-nutHeight]) rotate([180,0,0]) nutcatch_parallel("M3",clk=NPclk);
-    translate([xJ2+30-3.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10.5]) rotate([180,0,0]) hole_through("M3",l=16,h=headHeight);
-    translate([xJ2+30-3.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-nutHeight]) rotate([180,0,0]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xJ1-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT+EPSILON]) hole_through("M3",l=16,h=headHeight);
+    translate([xJ1-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10+nutHeight-0.5]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xJ1+30-3.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT+EPSILON]) hole_through("M3",l=16,h=headHeight);
+    translate([xJ1+30-3.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10+nutHeight-0.5]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xJ2-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT+EPSILON]) hole_through("M3",l=16,h=headHeight);
+    translate([xJ2-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10+nutHeight-0.5]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xJ2+30-3.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT+EPSILON]) hole_through("M3",l=16,h=headHeight);
+    translate([xJ2+30-3.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10+nutHeight-0.5]) nutcatch_parallel("M3",clk=NPclk);
 }
 
 module draw_left_side_fasteners()
