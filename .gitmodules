@@ -1,3 +1,3 @@
-[submodule "externals/nutsnbolts"]
-	path = externals/nutsnbolts
+[submodule "v1/externals/nutsnbolts"]
+	path = v1/externals/nutsnbolts
 	url = https://github.com/JohK/nutsnbolts
