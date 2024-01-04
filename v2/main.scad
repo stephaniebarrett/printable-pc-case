@@ -470,10 +470,14 @@ module draw_floor_section(section=0)
 
                 difference()
                 {
-                    union()
+                    intersection()
                     {
-                        translate([ATX_PSU_POS[0]+ATX_PSU_DIMS[2]+1,RACK_FRONT_DIM+FAN_DEPTH+BUFFER+HDD_35_DIMS[0]/3,-RACK_FLOOR_DIM/3+2]) scale([1,2,1]) rotate([0,90,0]) cylinder(h=RACK_OUTER_WIDTH-RACK_WALL_DIM*2-BUFFER*2-ATX_PSU_DIMS[2],d=HDD_35_DIMS[0]/2);
-                        translate([ATX_PSU_POS[0]+ATX_PSU_DIMS[2]+1,RACK_FRONT_DIM+FAN_DEPTH+BUFFER+HDD_35_DIMS[0]/2,-RACK_FLOOR_DIM/3]) scale([1,2,1]) rotate([0,90,0]) cylinder(h=RACK_OUTER_WIDTH-RACK_WALL_DIM*2-BUFFER*2-ATX_PSU_DIMS[2],d=HDD_35_DIMS[0]/2);
+                        union()
+                        {
+                            translate([ATX_PSU_POS[0]+ATX_PSU_DIMS[2]+1,RACK_FRONT_DIM+FAN_DEPTH+BUFFER+HDD_35_DIMS[0]/3,-RACK_FLOOR_DIM/3+2]) scale([1,2,1]) rotate([0,90,0]) cylinder(h=RACK_OUTER_WIDTH-RACK_WALL_DIM*2-BUFFER*2-ATX_PSU_DIMS[2],d=HDD_35_DIMS[0]/2);
+                            translate([ATX_PSU_POS[0]+ATX_PSU_DIMS[2]+1,RACK_FRONT_DIM+FAN_DEPTH+BUFFER+HDD_35_DIMS[0]/2,-RACK_FLOOR_DIM/3]) scale([1,2,1]) rotate([0,90,0]) cylinder(h=RACK_OUTER_WIDTH-RACK_WALL_DIM*2-BUFFER*2-ATX_PSU_DIMS[2],d=HDD_35_DIMS[0]/2);
+                        }
+                        translate([ATX_PSU_POS[0]+ATX_PSU_DIMS[2]+0.5,RACK_FRONT_DIM,RACK_FLOOR_DIM/2]) cube([RACK_OUTER_WIDTH-RACK_WALL_DIM*2-BUFFER*2-ATX_PSU_DIMS[2]+1,HDD_35_DIMS[0]*1.5,HDD_35_DIMS[0]/2]);
                     }
 
                     translate([-0.1,-0.1,0]) draw_drives();
@@ -874,7 +878,6 @@ module draw_floor_fasteners()
     }
 }
 
-
 module draw_front_fasteners()
 {
     length = 6.5;
@@ -893,14 +896,14 @@ module draw_front_fasteners()
     }
     
     // floor
-    translate([xJ1-20-8.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5]) hole_through("M3",l=16,h=headHeight);
-    translate([xJ1-20-8.5,RACK_FRONT_DIM+5,nutHeight]) nutcatch_parallel("M3",clk=NPclk);
-    translate([xJ1+30-3.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5]) hole_through("M3",l=16,h=headHeight);
-    translate([xJ1+30-3.5,RACK_FRONT_DIM+5,nutHeight]) nutcatch_parallel("M3",clk=NPclk);
-    translate([xJ2-20-8.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5]) hole_through("M3",l=16,h=headHeight);
-    translate([xJ2-20-8.5,RACK_FRONT_DIM+5,nutHeight]) nutcatch_parallel("M3",clk=NPclk);
-    translate([xJ2+30-3.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5]) hole_through("M3",l=16,h=headHeight);
-    translate([xJ2+30-3.5,RACK_FRONT_DIM+5,nutHeight]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xJ1-20-8.5,RACK_FRONT_DIM+5,-EPSILON]) rotate([180,0,0]) hole_through("M3",l=16,h=_get_head_height("M3x6"));
+    translate([xJ1-20-8.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5+EPSILON]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xJ1+30-3.5,RACK_FRONT_DIM+5,-EPSILON]) rotate([180,0,0]) hole_through("M3",l=16,h=_get_head_height("M3x6"));
+    translate([xJ1+30-3.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5+EPSILON]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xJ2-20-8.5,RACK_FRONT_DIM+5,-EPSILON]) rotate([180,0,0]) hole_through("M3",l=16,h=_get_head_height("M3x6"));
+    translate([xJ2-20-8.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5+EPSILON]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xJ2+30-3.5,RACK_FRONT_DIM+5,-EPSILON]) rotate([180,0,0]) hole_through("M3",l=16,h=_get_head_height("M3x6"));
+    translate([xJ2+30-3.5,RACK_FRONT_DIM+5,RACK_FLOOR_DIM+10.5+EPSILON]) nutcatch_parallel("M3",clk=NPclk);
     // roof
     translate([xJ1-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT+EPSILON]) hole_through("M3",l=16,h=headHeight);
     translate([xJ1-20-8.5,RACK_FRONT_DIM+5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10+nutHeight-0.5]) nutcatch_parallel("M3",clk=NPclk);
