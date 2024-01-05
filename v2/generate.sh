@@ -4,77 +4,138 @@
 # Copyright (C) 2023 Stephanie Barrett (https://github.com/stephaniebarrett)
 # Last revised 04/01/2024
 
-# Usage: generate.sh [--[front|left|right|floor|roof|back|joinery|all]
+# Usage: generate.sh [OPTION [ARGUMENT]]...
 #
-# Options:
-#   echo "  --front    Export the front panel."
-#   echo "  --left     Export the left panel."
-#   echo "  --right    Export the right panel."
-#   echo "  --floor    Export the floor/bottom panel."
-#   echo "  --roof     Export the roof/top panel."
-#   echo "  --back     Export the rear/back."
-#   echo "  --joinery  Export all the joinery; some object separation will be required in your slicer since multiple objects will be generated."
-#   echo "  --all      All of the above."
+# OPTIONS:
+#    -o, --out_path <filepath>                      Specify the output file path. Default: ./export
+#    -i, --in_file <filepath>                       Specify the input .scad file. Default: main.scad
+#    -p, --panel front|left|right|top|bottom|back   Specify which panel to render.
+#    -j, --joinery                                  A toggle to render the joinery instead of the panel for the specified panel.
+#    -r, --resolution <value>                       The resolution of the exported .png thumbnail. Default: 1024.
+#    -a, --all                                      Exports all geometry. NOTE: very hardware intensive.
+#    -h, --help                                     Displays this information.
 
 openscad="/usr/bin/openscad"
-input="main.scad"
-output="export"
+in_file="main.scad"
+out_path="export"
+panel=
+joinery=0
+resolution=1024
 
 usage()
 {
-    echo
-    echo "Usage: generate.sh [--[front|left|right|floor|roof|back|joinery|all]"
-    echo "  --front    Export the front panel."
-    echo "  --left     Export the left panel."
-    echo "  --right    Export the right panel."
-    echo "  --floor    Export the floor/bottom panel."
-    echo "  --roof     Export the roof/top panel."
-    echo "  --back     Export the rear/back."
-    echo "  --joinery  Export all the joinery; some object separation will be required in your slicer since multiple objects will be generated."
-    echo "  --all      All of the above."
-    echo
-    exit 1
+    cat <<USAGE
+Usage: ${0} [OPTION [ARGUMENT]]...
+
+OPTIONS:
+    -o, --out_path <filepath>                      Specify the output file path. Default: ./export
+    -i, --in_file <filename>                       Specify the input .scad file. Default: main.scad
+    -p, --panel front|left|right|top|bottom|back   Specify which panel to render.
+    -j, --joinery                                  A toggle to render the joinery instead of the panel for the specified panel.
+    -r, --resolution <value>                       The resolution of the exported .png thumbnail. Default: 1024.
+    -a, --all                                      Exports all geometry. NOTE: very hardware intensive.
+    -h, --help                                     Print this help message.
+USAGE
 }
 
 generate()
 {
-    for i in 1 2 3
-    do
-        mkdir $output'/'$1
-        stl=$output'/'$1'/'$1'-'$i'.stl'
-        png=$output'/'$1'/'$1'-'$i'.png'
+    \mkdir -p $out_path'/'$1
+    if [ $8 -eq 0 ]
+    then
+        for section in 1 2 3
+        do
+            stl=$out_path'/'$1'/'$1'-'$section'.stl'
+            png=$out_path'/'$1'/'$1'-'$section'.png'
 
-        echo "Rendering ${input} into ${stl} and ${png}."
+            openscad -o $stl -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=0 -D SECTION=$section -D EXPLODED=0 $in_file &
+            openscad -o $png -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=0 -D SECTION=$section -D EXPLODED=0 --autocenter --viewall --imgsize $resolution,$resolution $in_file &
+        done
+    else
+        stl=$out_path'/'$1'/'$1'_joinery.stl'
+        png=$out_path'/'$1'/'$1'_joinery.png'
 
-        openscad -o $stl -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=$8 -D SECTION=$i -D EXPLODED=0 $input &
-        openscad -o $png -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=$8 -D SECTION=$i -D EXPLODED=0 --autocenter --viewall --imgsize 1024,1024 $input &
-    done
+        openscad -o $stl -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=1 -D SECTION=0 -D EXPLODED=0 $in_file &
+        openscad -o $png -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=1 -D SECTION=0 -D EXPLODED=0 --autocenter --viewall --imgsize $resolution,$resolution $in_file &
+    fi
 }
 
 generate_all()
 {
-    generate "front" 1 0 0 0 0 0 0
-    generate "left" 0 1 0 0 0 0 0
-    generate "right" 0 0 1 0 0 0 0
-    generate "floor" 0 0 0 1 0 0 0
-    generate "roof" 0 0 0 0 1 0 0
-    generate "back" 0 0 0 0 0 1 0
-    generate "joinery" 1 1 1 1 1 1 1
+    for i in 0 1
+    do
+        generate "front" 1 0 0 0 0 0 $i
+        generate "left" 0 1 0 0 0 0 $i
+        generate "right" 0 0 1 0 0 0 $i
+        generate "floor" 0 0 0 1 0 0 $i
+        generate "roof" 0 0 0 0 1 0 $i
+        generate "back" 0 0 0 0 0 1 $i
+    done
+    wait
 }
 
-while [ $# -gt 0 ]
-do
+# Parse the command line arguments
+while [ "$1" != "" ]; do
     case $1 in
-        --front) generate "front" 1 0 0 0 0 0 0;;
-        --left) generate "left" 0 1 0 0 0 0 0;;
-        --right) generate "right" 0 0 1 0 0 0 0;;
-        --floor | --bottom) generate "floor" 0 0 0 1 0 0 0;;
-        --roof | --top) generate "roof" 0 0 0 0 1 0 0;;
-        --back | --rear) generate "back" 0 0 0 0 0 1 0;;
-        --joinery) generate "joinery" 1 1 1 1 1 1 1;;
-        --all) generate_all;;
-        *) usage;;
+        -o | --out_path )
+            shift
+            out_path=$1
+            ;;
+        -i | --in_file )
+            shift
+            in_file=$1
+            ;;
+        -p | --panel )
+            shift
+            panel=$1
+            ;;
+        -j | --joinery )
+            joinery=1
+            ;;
+        -r | --resolution )
+            shift
+            resolution=$1
+            ;;
+        -a | --all )
+            generate_all
+            exit
+            ;;
+        -h | --help )
+            usage
+            exit
+            ;;
+        * )
+            usage
+            exit 1
     esac
     shift
 done
-wait
+
+if [ "$panel" != "" ]
+then
+    case $panel in
+        "front")
+            generate "front" 1 0 0 0 0 0 $joinery
+            ;;
+        "left")
+            generate "left" 0 1 0 0 0 0 $joinery
+            ;;
+        "right")
+            generate "right" 0 0 1 0 0 0 $joinery
+            ;;
+        "floor"|"bottom")
+            generate "floor" 0 0 0 1 0 0 $joinery
+            ;;
+        "roof"|"top")
+            generate "roof" 0 0 0 0 1 0 $joinery
+            ;;
+        "back"|"rear")
+            generate "back" 0 0 0 0 0 1 $joinery
+            ;;
+        *)
+            echo "Invalid panel selection."
+            exit 1
+            ;;
+    esac
+    wait
+fi
