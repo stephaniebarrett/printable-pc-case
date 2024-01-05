@@ -51,7 +51,7 @@ generate()
         if [ $8 -eq 0 ]
         then
 
-            for section in 1 2 3
+            for section in 1 2 3 4
             do
                 stl=$out_path'/'$1'/'$1'-'$section'.stl'
                 png=$out_path'/'$1'/'$1'-'$section'.png'
