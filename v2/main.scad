@@ -155,8 +155,8 @@ if (JOINERY == 1)
             {
                 difference()
                 {
-                    width = 220;
-                    depth = 195;
+                    width = (RACK_OUTER_WIDTH-1)/2;
+                    depth = (RACK_OUTER_DEPTH/2);
                     translate([RACK_OUTER_WIDTH/2,RACK_OUTER_DEPTH/2,1.5-EPSILON]) cube([width+10,depth+10,3],center=true);
                     translate([RACK_OUTER_WIDTH/2,RACK_OUTER_DEPTH/2,2-EPSILON*2]) cube([width-10,depth-10,4],center=true);
                 }
@@ -173,8 +173,8 @@ if (JOINERY == 1)
             {
                 difference()
                 {
-                    width = 220;
-                    depth = 195;
+                    width = (RACK_OUTER_WIDTH-1)/2;
+                    depth = (RACK_OUTER_DEPTH/2);
                     translate([RACK_OUTER_WIDTH/2,RACK_OUTER_DEPTH/2,RACK_OUTER_HEIGHT-1.5+EPSILON]) cube([width+10,depth+10,3],center=true);
                     translate([RACK_OUTER_WIDTH/2,RACK_OUTER_DEPTH/2,RACK_OUTER_HEIGHT-2+EPSILON*2]) cube([width-10,depth-10,4],center=true);
                 }
@@ -260,8 +260,8 @@ module draw_roof_panel_section(section=0)
                 translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH/2-10,-30]) cube([10,20,20]);
             }
             // joinery
-            width = 220;
-            depth = 195;
+            width = (RACK_OUTER_WIDTH-1)/2;
+            depth = (RACK_OUTER_DEPTH/2);
             difference()
             {
                 translate([RACK_OUTER_WIDTH/2,RACK_OUTER_DEPTH/2,RACK_OUTER_HEIGHT-1.5+EPSILON]) cube([width+11,depth+11,3],center=true);
@@ -491,8 +491,8 @@ module draw_floor_section(section=0)
             }
             
             // joinery
-            width = 220;
-            depth = 195;
+            width = (RACK_OUTER_WIDTH-1)/2;
+            depth = (RACK_OUTER_DEPTH/2);
             difference()
             {
                 translate([RACK_OUTER_WIDTH/2,RACK_OUTER_DEPTH/2,1.5-EPSILON]) cube([width+11,depth+11,3],center=true);
@@ -806,8 +806,8 @@ module draw_roof_fasteners()
     nutHeight = _get_nut_height("M3x6");
     xOffset = RACK_OUTER_WIDTH/2;
     yOffset = RACK_OUTER_DEPTH/2;
-    width = 220;
-    depth = 195;
+    width = (RACK_OUTER_WIDTH-1)/2;
+    depth = (RACK_OUTER_DEPTH/2);
     spacing_x = width/3;
     spacing_y = depth/3;
     for(i=[0:spacing_x:width])
@@ -845,8 +845,8 @@ module draw_floor_fasteners()
     nutHeight = _get_nut_height("M3x6");
     xOffset = RACK_OUTER_WIDTH/2;
     yOffset = RACK_OUTER_DEPTH/2;
-    width = 220;
-    depth = 195;
+    width = (RACK_OUTER_WIDTH-1)/2;
+    depth = (RACK_OUTER_DEPTH/2);
     spacing_x = width/3;
     spacing_y = depth/3;
    
