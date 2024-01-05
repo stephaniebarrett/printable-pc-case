@@ -41,22 +41,29 @@ USAGE
 generate()
 {
     \mkdir -p $out_path'/'$1
-    if [ $8 -eq 0 ]
+    if [ "$1" = "screenshot" ]
     then
-        for section in 1 2 3
-        do
-            stl=$out_path'/'$1'/'$1'-'$section'.stl'
-            png=$out_path'/'$1'/'$1'-'$section'.png'
-
-            openscad -o $stl -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=0 -D SECTION=$section -D EXPLODED=0 $in_file &
-            openscad -o $png -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=0 -D SECTION=$section -D EXPLODED=0 --autocenter --viewall --imgsize $resolution,$resolution $in_file &
-        done
+        png=$out_path'/printable-pc-case-v2.png'
+        openscad -o $png -D FRONT=1 -D LEFT=1 -D RIGHT=1 -D FLOOR=1 -D ROOF=0 -D BACK=1 -D JOINERY=0 -D SECTION=0 -D EXPLODED=1 --imgsize $resolution,$resolution $in_file &
     else
-        stl=$out_path'/'$1'/'$1'_joinery.stl'
-        png=$out_path'/'$1'/'$1'_joinery.png'
+        if [ $8 -eq 0 ]
+        then
 
-        openscad -o $stl -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=1 -D SECTION=0 -D EXPLODED=0 $in_file &
-        openscad -o $png -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=1 -D SECTION=0 -D EXPLODED=0 --autocenter --viewall --imgsize $resolution,$resolution $in_file &
+            for section in 1 2 3
+            do
+                stl=$out_path'/'$1'/'$1'-'$section'.stl'
+                png=$out_path'/'$1'/'$1'-'$section'.png'
+
+                openscad -o $stl -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=0 -D SECTION=$section -D EXPLODED=0 $in_file &
+                openscad -o $png -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=0 -D SECTION=$section -D EXPLODED=0 --autocenter --viewall --imgsize $resolution,$resolution $in_file &
+            done
+        else
+            stl=$out_path'/'$1'/'$1'_joinery.stl'
+            png=$out_path'/'$1'/'$1'_joinery.png'
+
+            openscad -o $stl -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=1 -D SECTION=0 -D EXPLODED=0 $in_file &
+            openscad -o $png -D FRONT=$2 -D LEFT=$3 -D RIGHT=$4 -D FLOOR=$5 -D ROOF=$6 -D BACK=$7 -D JOINERY=1 -D SECTION=0 -D EXPLODED=0 --autocenter --viewall --imgsize $resolution,$resolution $in_file &
+        fi
     fi
 }
 
@@ -70,8 +77,8 @@ generate_all()
         generate "floor" 0 0 0 1 0 0 $i
         generate "roof" 0 0 0 0 1 0 $i
         generate "back" 0 0 0 0 0 1 $i
+        wait
     done
-    wait
 }
 
 # Parse the command line arguments
@@ -98,6 +105,11 @@ while [ "$1" != "" ]; do
             ;;
         -a | --all )
             generate_all
+            exit
+            ;;
+        -s )
+            generate "screenshot"
+            wait
             exit
             ;;
         -h | --help )
