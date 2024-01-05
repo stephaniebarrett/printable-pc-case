@@ -13,6 +13,7 @@
 #    -j, --joinery                                  A toggle to render the joinery instead of the panel for the specified panel.
 #    -r, --resolution <value>                       The resolution of the exported .png thumbnail. Default: 1024.
 #    -a, --all                                      Exports all geometry. NOTE: very hardware intensive.
+#    -s                                             Exports an exploded view screenshot.
 #    -h, --help                                     Displays this information.
 
 openscad="/usr/bin/openscad"
@@ -34,6 +35,7 @@ OPTIONS:
     -j, --joinery                                  A toggle to render the joinery instead of the panel for the specified panel.
     -r, --resolution <value>                       The resolution of the exported .png thumbnail. Default: 1024.
     -a, --all                                      Exports all geometry. NOTE: very hardware intensive.
+    -s                                             Exports an exploded view screenshot.
     -h, --help                                     Print this help message.
 USAGE
 }
@@ -69,6 +71,7 @@ generate()
 
 generate_all()
 {
+    generate "screenshot"
     for i in 0 1
     do
         generate "front" 1 0 0 0 0 0 $i
