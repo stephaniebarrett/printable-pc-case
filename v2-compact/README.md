@@ -1,30 +1,26 @@
-# 3D Printable Rackmount PC/Server Case using OpenScad V2.
+# 3D Printable Rackmount PC/Server Case using [OpenSCAD](https://openscad.org/).
 ## WIP
-The goal of this project was to create [OpenSCAD](https://openscad.org/) modules to facilitate the design of a modular rack-mountable computer chassis. It has been heavily inspired by https://www.printables.com/model/485778-mini-itx-server-rackmount-2u But going through the testing process, it has become less of modules to build cases, and more about supporting the case that I'm currently building.
-## Requirements
-- OpenSCAD
-- [nutsnbolts](https://github.com/JohK/nutsnbolts) library for fasteners.
-- honeycomb library for the honeycomb texture used on fan openings.
+The goal of this project originally was to create OpenSCAD modules of PC components to facilitate the design of a modular rack-mountable computer chassis. But once that was complete, I began designing a chassis and somewhere to store it; so for now, here we are. 2.5 versions in and I still feel like this is very much a work in progress. As I complete test prints, and have new ideas, I will continue to iterate on the case design.
 
-# Modules
-Many of the modules approximate the physical dimensions of various PC components. These are used to estimate positions and clearances of all the printable parts. Most of the dimensions were pulled from spec sheets online, and the rest were measured from physical pc hardware.
-### mainboard.scad
-- ATX and Micro ATX models.
-### psu.scad
-- ATX model.
-### hdd.scad
-- 2.5" SSD & 3.5" HDD models.
-- additionally, modules to generate drive cages.
-### fan.scad
-- 140mm, 120mm, 92mm, 80mm, 70mm, 60mm, 50mm, 40mm models and through holes for mounting and ducting.
-### main.scad
-- 19", variable height measured in rack units (some testing is still required).
-- contains modules to cut up the rack into printable sections.
-- This is the place you want to make changes to the layout
+### V2 & V2-Compact
+A complete redesign has enebled me to mitigate most of the cracking, warping, and support issues by building panels rather than sections. This means all of the panels can be printed flat on the build plate and the hex sections come out quite well. I moved the PSU to the front of the case, which required standing it on it's side to fit beside an ATX mainboard within a 19" rack. That also means I've had to go from a 3U design to a 4U to fit it on it's side, and you'll need to plug it in at the front. However, all of the heavy components are now at the front of the case, close to the supports, which has allowed some thinner walls and a somewhat simpler system of joining the panels together.
 
-## TODO
-- support PCI expansion cards in the rear wall
-- add code comments
-- add export script
+The compact version of the V2 case is almost identical. The most obvious difference is that the HDDs are mounted above the mainboard, allowing the case depth to be reduced by about 115mm
 
-## Notes
+![Chassis Rendering](../printable-pc-case-v2_v2-compact.png "V2 & V2-Compact Rendering")
+
+#### Exporting (bash file)
+```
+Usage: ${0} [OPTION [ARGUMENT]]... main.scad
+
+OPTIONS:
+    -o, --out_path <filepath>                      Specify the output file path. Default: ./export
+    -i, --in_file <filename>                       Specify the input .scad file. Default: main.scad
+    -p, --panel front|left|right|top|bottom|back   Specify which panel to render.
+    -j, --joinery                                  A toggle to render the joinery instead of the panel for the specified panel.
+    -c, --cage                                     A toggle to render the HDD cage instead of any other geometry.
+    -r, --resolution <value>                       The resolution of the exported .png thumbnail. Default: 1024.
+    -a, --all                                      Exports all geometry. NOTE: very hardware intensive.
+    -s                                             Exports an exploded view screenshot.
+    -h, --help                                     Print this help message.
+```
