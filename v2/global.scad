@@ -1,6 +1,6 @@
 include <../ext/nutsnbolts/cyl_head_bolt.scad>;
 include <../ext/honeycomb/honeycomb.scad>
-include <../ext/dovetails/dovetails.scad>
+include <../ext/OpenSCAD-Dovetails/dovetails.scad>
 
 include <../lib/mainboard.scad>
 include <../lib/psu.scad>
