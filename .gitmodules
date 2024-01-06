@@ -1,0 +1,6 @@
+[submodule "ext/nutsnbolts"]
+	path = ext/nutsnbolts
+	url = https://github.com/JohK/nutsnbolts
+[submodule "ext/OpenSCAD-Dovetails"]
+	path = ext/OpenSCAD-Dovetails
+	url = https://github.com/cfinke/OpenSCAD-Dovetails
