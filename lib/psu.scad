@@ -1,6 +1,14 @@
-include <global.scad>
+include <utility.scad>
 
-draw_ATX_psu();
+// ATX power supply dimensions
+ATX_PSU_DIMS = [150, 146, 86];
+// ATX power supply mounting hole locations
+ATX_PSU_MOUNTING_HOLES = [
+    [6, 16],
+    [6+114, 6],
+    [6, 16+64],
+    [6+138, 6+74]
+];
 
 module draw_ATX_psu(center=false)
 {
@@ -13,8 +21,6 @@ module draw_ATX_psu(center=false)
     }
     
 }
-
-function get_ATX_psu_dims() = ATX_PSU_DIMS;
 
 module draw_psu_mounting_holes(holeLocations)
 {

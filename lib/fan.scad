@@ -1,5 +1,6 @@
-include <global.scad>
-
+// Chassis fan mounting hole size
+FAN_MOUNTING_HOLE_DIAMETER = 4.3;
+FAN_DEPTH = 25;
 
 draw_fan_mounting_holes_offset(120,20);
 

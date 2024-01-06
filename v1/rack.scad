@@ -1,8 +1,4 @@
 include <global.scad>
-use <mainboard.scad>
-use <fan.scad>
-use <hdd.scad>
-use <psu.scad>
 
 // DRAW MAINBOARD GHOST
 %translate(MB_POSITION)
@@ -14,11 +10,13 @@ else if (CASE_CONFIGURATION == 2)
 // DRAW PSU GHOST
 %translate(PSU_POSITION) draw_ATX_psu();
 
+/*
 ssdOffsetX = HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1];
 ssdOffsetY = get_hdd_cage_width("hdd") - get_hdd_cage_width("ssd");
 rightCage = [RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET, RACK_FLOOR_THICKNESS];
 leftCage = [RACK_WALL_THICKNESS + HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET + get_hdd_cage_width("hdd"), RACK_FLOOR_THICKNESS];
-
+*/
+/*
 // DRAW 2.5 HDD CAGE GHOSTS
 // right side
 %translate([rightCage[0]-ssdOffsetX, rightCage[1], rightCage[2]]) rotate([0,0,90]) draw_hdd_cage("ssd", true);
@@ -26,7 +24,8 @@ leftCage = [RACK_WALL_THICKNESS + HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFS
 // left side
 %translate([leftCage[0]+ssdOffsetX, leftCage[1] - ssdOffsetY, leftCage[2]]) rotate([0,0,-90]) draw_hdd_cage("ssd", true);
 %translate([leftCage[0]+ssdOffsetX, leftCage[1] - ssdOffsetY, leftCage[2]]) rotate([0,0,-90]) draw_hdd_cage("ssd", false);
-
+*/
+/*
 // DRAW 3.5 HDD CAGE GHOSTS
 if (CASE_CONFIGURATION == 1)
 {
@@ -53,6 +52,7 @@ else if (CASE_CONFIGURATION == 2)
 {
     %translate([RACK_WALL_THICKNESS + HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET, RACK_FLOOR_THICKNESS]) draw_hdd_cage_vertical("hdd", HDD_35_CAGE_NUM_DRIVES_CONFIG2);
 }
+*/
 
 
 draw_left_front(NUMBER_OF_RACK_UNITS,RACK_DEPTH,FAN_SIZE_FRONT,FAN_DEPTH);
@@ -187,10 +187,12 @@ module draw_right_rear(rackUnits, depth)
 module draw_left_front(rackUnits, depth, fanSize, fanDepth)
 {
     rack_outer_dims = get_rack_outer_dims(rackUnits, depth);
+    /*
     ssdOffsetX = HDD_35_SIDE_MOUNT_HOLES[1][1]-HDD_25_SIDE_MOUNT_HOLES[1][1];
     ssdOffsetY = get_hdd_cage_width("hdd") - get_hdd_cage_width("ssd");
     rightCage = [RACK_OUTER_DIMS[0] - RACK_WALL_THICKNESS - HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET, RACK_FLOOR_THICKNESS];
     leftCage = [RACK_WALL_THICKNESS + HDD_X_OFFSET, RACK_WALL_THICKNESS + HDD_Y_OFFSET + get_hdd_cage_width("hdd"), RACK_FLOOR_THICKNESS];
+    */
 
     difference()
     {
@@ -211,6 +213,7 @@ module draw_left_front(rackUnits, depth, fanSize, fanDepth)
             // through holes for securing tabs together
             translate([rack_outer_dims[0]/3-RACK_TAB_SIZE[0]/2,y+RACK_TAB_SIZE[1]/2,RACK_FLOOR_THICKNESS+EPSILON]) hole_through(name="M3",h=M3x10HeadHeight, cld=THcld, hcld=THhcld, $fn=32);
         }
+        /*
         // through holes to mount 2.5 HDD cage
         {
             y = RACK_WALL_THICKNESS + HDD_Y_OFFSET;
@@ -233,6 +236,7 @@ module draw_left_front(rackUnits, depth, fanSize, fanDepth)
                 translate([x+w, y, -EPSILON]) rotate([180, 0, 0]) hole_through(name="M3",h=M3x10HeadHeight, l=20, cld=THcld, hcld=THhcld, $fn=32);
             }
         }
+        */
     }
 }
 
@@ -724,7 +728,7 @@ module draw_rack_rear(rackUnits, depth)
             //wall
             translate([0, RACK_OUTER_DIMS[1] - RACK_WALL_THICKNESS, RACK_FLOOR_THICKNESS]) cube([RACK_OUTER_DIMS[0], RACK_WALL_THICKNESS, RACK_INNER_DIMS[2]]);
             //io cutout
-            translate([MB_POSITION[0]+MB_IO_CUTOUT_OFFSET_X-mATX_xOFFSET, RACK_OUTER_DIMS[1]-RACK_WALL_THICKNESS-EPSILON, MB_POSITION[2]+MB_IO_CUTOUT_OFFSET_Z]) cube([MB_IO_CUTOUT_DIMS[0],MB_IO_CUTOUT_DIMS[1]+1,MB_IO_CUTOUT_DIMS[2]]);
+            translate([MB_POSITION[0]+MB_IO_CUTOUT_OFFSET_X-mATX_xOFFSET, RACK_OUTER_DIMS[1]-RACK_WALL_THICKNESS-EPSILON, MB_POSITION[2]+MB_IO_CUTOUT_OFFSET_Z]) cube([MB_IO_CUTOUT_DIMS[0],RACK_WALL_THICKNESS+1,MB_IO_CUTOUT_DIMS[2]]);
             //io inset
             translate([MB_POSITION[0]+MB_IO_CUTOUT_OFFSET_X-mATX_xOFFSET-MB_IO_CUTOUT_BORDER/2, RACK_OUTER_DIMS[1]-RACK_WALL_THICKNESS*2+1, MB_POSITION[2]+MB_IO_CUTOUT_OFFSET_Z-MB_IO_CUTOUT_BORDER/2]) cube([MB_IO_CUTOUT_DIMS[0]+MB_IO_CUTOUT_BORDER,RACK_WALL_THICKNESS,MB_IO_CUTOUT_DIMS[2]+MB_IO_CUTOUT_BORDER]);
             //psu mounting holes

@@ -1,10 +1,10 @@
-include <externals/nutsnbolts/cyl_head_bolt.scad>
-include <externals/honeycomb/honeycomb.scad>
-include <utility.scad>
+include <../ext/nutsnbolts/cyl_head_bolt.scad>
+include <../ext/honeycomb/honeycomb.scad>
 
-function INCH_TO_MM(inch) = inch * 25.4;
-
-EPSILON = 0.01;
+include <../lib/mainboard.scad>
+include <../lib/fan.scad>
+include <../lib/hdd.scad>
+include <../lib/psu.scad>
 
 USE_HEATSETS = true;
 
@@ -80,7 +80,7 @@ mATX_HOLES = [1, 2, 3, 5, 6, 8, 9];
 MB_MOUNTING_HOLE_DIAMETER = 3.5;
 MB_STANDOFF_HEIGHT = 9.5;
 MB_STANDOFF_OUTER_DIAMETER = 8;
-MB_IO_CUTOUT_DIMS = [159, RACK_WALL_THICKNESS, 44.7];
+MB_IO_CUTOUT_DIMS = [159, 0, 44.7];
 MB_IO_CUTOUT_OFFSET_X = INCH_TO_MM(.65+5.196-.01);
 MB_IO_CUTOUT_OFFSET_Z = -2.3;
 MB_IO_CUTOUT_BORDER = 2.6;

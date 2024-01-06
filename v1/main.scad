@@ -1,14 +1,8 @@
 // Helpers
 include <global.scad>
 
-// PC Components
-use <mainboard.scad>
-use <psu.scad>
-use <hdd.scad>
-use <fan.scad>
-
 // Case Components
-use <rack.scad>
+include <rack.scad>
 
 DRAW_RACK = 0;
 DRAW_JOINERY = 0;

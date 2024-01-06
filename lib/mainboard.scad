@@ -1,7 +1,36 @@
-include <global.scad>
+include <utility.scad>
 
-translate([0, ATX_MB_DIMS[0], 0]) draw_ATX_mainboard();
-draw_mATX_mainboard(true);
+// ATX board dimensions
+ATX_MB_DIMS = [305, 244, 1.6];
+// Micro ATX board dimensions
+mATX_MB_DIMS = [244, 244, 1.6];
+// ATX mounting hole positions (in inches)
+MB_HOLE_LAYOUT_INCHES = [
+    [.65, .4],          // A 0
+    [.65+3.1, .4],      // B 1
+    [.65+4.9, .4],      // C 2
+    [.65+11.1, .4+.9],  // F 3
+    [.65, .4+6.1],      // G 4
+    [.65+4.9, .4+6.1],  // H 5
+    [.65+11.1, .4+6.1], // J 6
+    [.65, .4+8.95],     // K 7
+    [.65+4.9, .4+8.95], // L 8
+    [.65+11.1, .4+8.95] // M 9
+];
+// ATX mounting hole indicies (A C F G H J K L M)
+ATX_HOLES = [0, 2, 3, 4, 5, 6, 7, 8, 9];
+// Micro ATX mounting hole indicies (B C F H J L M R S)
+mATX_HOLES = [1, 2, 3, 5, 6, 8, 9];
+// Mainboard standoff sizes
+MB_MOUNTING_HOLE_DIAMETER = 3.5;
+MB_STANDOFF_HEIGHT = 9.5;
+MB_STANDOFF_OUTER_DIAMETER = 8;
+MB_IO_CUTOUT_DIMS = [159, 0, 44.7]; // when using this, use your rack wall thickness in place of the y value here.
+MB_IO_CUTOUT_OFFSET_X = INCH_TO_MM(.65+5.196-.01);
+MB_IO_CUTOUT_OFFSET_Z = -2.3;
+MB_IO_CUTOUT_BORDER = 2.6;
+MB_OFFSET_Z = -1.7;
+REAR_IO_WALL_Y = 1.7;
 
 module draw_ATX_mainboard(center=false)
 {

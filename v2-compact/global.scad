@@ -12,7 +12,7 @@ THcld  = 0.4; // dia clearance for the bolt
 THhcld = 1.0; // dia clearances for the head
 // nutcatch parallel
 NPclh = 0.2; // nut height clearance
-NPclk = 0.1; // clearance aditional to nominal key width
+NPclk = 0.2; // clearance aditional to nominal key width
 // nutcatch sidecut
 NSclh = 0.2; // height clearance
 NSclsl = 0.2; // slot width clearance
@@ -25,14 +25,15 @@ RACK_EAR_HOLE_OFFSET = 6.35;
 RACK_EAR_HOLE_SPACING = 15.875;
 
 RACK_OUTER_WIDTH = 441;
-RACK_OUTER_DEPTH = 400;
+RACK_OUTER_DEPTH = 285;
 RACK_OUTER_HEIGHT = get_rack_height(4);
 
 RACK_FLOOR_DIM = 6;
 RACK_ROOF_DIM = 6;
-RACK_WALL_DIM = 5;
-RACK_FRONT_DIM = 6;
-RACK_BACK_DIM = 6;
+RACK_WALL_DIM = 4;
+RACK_FRONT_DIM = 4;
+RACK_BACK_DIM = 4;
+
 BUFFER = 11;
 
 ATX_MB_POS = [RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER*2-ATX_MB_DIMS[0], RACK_OUTER_DEPTH-RACK_BACK_DIM-ATX_MB_DIMS[1], RACK_FLOOR_DIM+MB_STANDOFF_HEIGHT+MB_OFFSET_Z];
@@ -52,7 +53,7 @@ xJ2 = ATX_PSU_POS[0]+ATX_PSU_DIMS[2]+((xFan2-70)-(ATX_PSU_POS[0]+ATX_PSU_DIMS[2]
 
 // HDD POSITIONS
 hddHeight = (RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM-HDD_35_DIMS[0])/2;
-hddSpacing = HDD_35_DIMS[2]+(140-HDD_35_DIMS[2]*4)/3;
+hddSpacing = HDD_35_DIMS[0]+5;
 ssdSpacing = HDD_25_DIMS[2]+(140-HDD_25_DIMS[2]*6)/3;
 yDrivePos = RACK_FRONT_DIM+FAN_DEPTH+BUFFER;
 
