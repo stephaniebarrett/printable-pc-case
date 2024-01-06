@@ -24,3 +24,7 @@ OPTIONS:
     -s                                             Exports an exploded view screenshot.
     -h, --help                                     Print this help message.
 ```
+#### Hardware
+##### 3.5" Drive Cage
+    - x2 M3x8 screw
+    - x2 M3 nut
