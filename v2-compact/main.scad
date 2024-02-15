@@ -8,14 +8,14 @@ ROOF = 0;
 BACK = 1;
 JOINERY = 0;
 
-EXPLODED = 10;
+EXPLODED = 0;
 SECTION = 0;
 
-MAINBOARD = 1;
-FANS = 1;
-PSU = 1;
-DRIVES = 1;
-DRIVE_CAGE = 1;
+MAINBOARD = 0;
+FANS = 0;
+PSU = 0;
+DRIVES = 0;
+DRIVE_CAGE = 0;
 
 // MAINBOARD
 if (MAINBOARD == 1)
@@ -211,8 +211,8 @@ module draw_roof_panel_section(section=0)
             {
                 translate([0,RACK_FRONT_DIM,0]) cube([RACK_OUTER_WIDTH, RACK_OUTER_DEPTH-RACK_FRONT_DIM, RACK_ROOF_DIM]);
                 // wall mounting points
-                translate([RACK_WALL_DIM,RACK_FRONT_DIM+40,-10]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-50,10]);
-                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,-10]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-50,10]);
+                translate([RACK_WALL_DIM,RACK_FRONT_DIM+40.5,-10]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-51,10]);
+                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40.5,-10]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-51,10]);
                 translate([RACK_WALL_DIM,RACK_OUTER_DEPTH/2-10,-30]) cube([10,20,20]);
                 translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH/2-10,-30]) cube([10,20,20]);
             }
@@ -296,13 +296,13 @@ module draw_back_panel_section(section=0)
                     translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM,RACK_FLOOR_DIM]) cube([RACK_OUTER_WIDTH-RACK_WALL_DIM*2,RACK_BACK_DIM,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
                     translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-10,RACK_FLOOR_DIM]) cube([10,10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
                     translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-10,RACK_FLOOR_DIM]) cube([10,10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
-                    translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+20]) cube([10,20,10]);
-                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+20]) cube([10,20,10]);
-                    translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,10]);
-                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,10]);
-                    translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5]) cube([10,10,10]);
-                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5]) cube([10,10,10]);
-
+                    translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+20.5]) cube([10,20,9.5]);
+                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+20.5]) cube([10,20,9.5]);
+                    translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,9.5]);
+                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,9.5]);
+                    translate([RACK_WALL_DIM,RACK_OUTER_DEPTH-RACK_BACK_DIM-19.5,RACK_OUTER_HEIGHT/2-4.5]) cube([10,9.5,9]);
+                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH-RACK_BACK_DIM-19.5,RACK_OUTER_HEIGHT/2-4.5]) cube([10,9.5,9]);
+/*
                     translate([RACK_WALL_DIM+10,RACK_OUTER_DEPTH-RACK_WALL_DIM-25.75,RACK_OUTER_HEIGHT/2-5]) rotate([0,-90,0]) board_with_dovetail_tails(
                         board_length=19.75,
                         board_width=board_width,
@@ -323,6 +323,7 @@ module draw_back_panel_section(section=0)
                         tail_count=tail_count,
                         angle=angle
                     );
+*/
                 }
 
                 // cutout to allow pci card tab through
@@ -423,13 +424,13 @@ module draw_floor_section(section=0)
                     translate([RACK_WALL_DIM+BUFFER+72,RACK_OUTER_DEPTH-RACK_BACK_DIM-6.25,RACK_FLOOR_DIM/2-0.25]) cube([182.65,RACK_BACK_DIM+6+EPSILON,RACK_FLOOR_DIM/2+0.25+EPSILON]);
                 }
                 // wall mounting points
-                translate([RACK_WALL_DIM,RACK_FRONT_DIM+40,RACK_FLOOR_DIM]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-50,10]);
-                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,RACK_FLOOR_DIM]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-50,10]);
+                translate([RACK_WALL_DIM,RACK_FRONT_DIM+40.5,RACK_FLOOR_DIM]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-51,10]);
+                translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40.5,RACK_FLOOR_DIM]) cube([10,RACK_OUTER_DEPTH-RACK_FRONT_DIM-RACK_BACK_DIM-51,10]);
                 translate([RACK_WALL_DIM,RACK_OUTER_DEPTH/2-10,RACK_FLOOR_DIM+10]) cube([10,20,20]);
                 translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_OUTER_DEPTH/2-10,RACK_FLOOR_DIM+10]) cube([10,20,20]);
 
                 // psu_supports
-                translate([RACK_WALL_DIM+BUFFER+5,RACK_FRONT_DIM+10,RACK_FLOOR_DIM]) cube([10,ATX_PSU_DIMS[1]-10,psuHeight]);
+                translate([RACK_WALL_DIM+BUFFER+5.5,RACK_FRONT_DIM+10.5,RACK_FLOOR_DIM]) cube([9.5,ATX_PSU_DIMS[1]-10.5,psuHeight]);
                 translate([RACK_WALL_DIM+BUFFER+ATX_PSU_DIMS[2]-15,RACK_FRONT_DIM+31,RACK_FLOOR_DIM]) cube([20,ATX_PSU_DIMS[1]-72,psuHeight]);
             }
             
@@ -485,6 +486,7 @@ module draw_left_panel_section(section=0)
                 // wall mounting points
                 draw_side_mounting_points(RACK_WALL_DIM);
             }
+/*
             translate([RACK_WALL_DIM+10.5+EPSILON,RACK_FRONT_DIM+35-EPSILON,RACK_OUTER_HEIGHT/2-5.5]) rotate([0,-90,0]) board_with_dovetail_tails(
                 board_length=20,
                 board_width=board_width+1,
@@ -505,6 +507,7 @@ module draw_left_panel_section(section=0)
                 tail_count=tail_count,
                 angle=angle
             );
+*/
             // joinery cutouts
             translate([RACK_WALL_DIM,RACK_OUTER_DEPTH/2-50.5,RACK_OUTER_HEIGHT/2-5.5]) cube([11,100+1,10+1]);
 
@@ -550,6 +553,7 @@ module draw_right_panel_section(section=0)
                 translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-16+EPSILON,yDrivePos+HDD_35_DIMS[1]-10,ATX_MB_DIMS[2]+75]) rotate([0,90,0]) cylinder(h=5,d=5,$fn=64);
 
             }
+/*
             translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-EPSILON,RACK_FRONT_DIM+35-EPSILON,RACK_OUTER_HEIGHT/2-5.5]) rotate([0,-90,0]) board_with_dovetail_tails(
                 board_length=20,
                 board_width=board_width+1,
@@ -570,7 +574,7 @@ module draw_right_panel_section(section=0)
                 tail_count=tail_count,
                 angle=angle
             );
-
+*/
             // joinery cutouts
             translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-11,RACK_OUTER_DEPTH/2-50.5,RACK_OUTER_HEIGHT/2-5.5]) cube([11,100+1,10+1]);
             draw_right_side_fasteners($fn=64);
@@ -674,15 +678,17 @@ module draw_front_panel_section(section=0)
                     translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-BUFFER-hddSpacing*3-0.5+5,RACK_FRONT_DIM,ATX_MB_DIMS[2]+75]) rotate([-90,0,0]) cylinder(h=5,d=5,$fn=64);
 
                     translate([RACK_WALL_DIM,RACK_FRONT_DIM,RACK_FLOOR_DIM]) cube([10,40,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
-                    translate([RACK_WALL_DIM,RACK_FRONT_DIM+40,RACK_FLOOR_DIM+20]) cube([10,20,10]);
-                    translate([RACK_WALL_DIM,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,10]);
-                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM,RACK_FLOOR_DIM]) cube([10,40,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
-                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,RACK_FLOOR_DIM+20]) cube([10,20,10]);
-                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,10]);
-                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT/2-5]) cube([10,10,10]);
+                    translate([RACK_WALL_DIM,RACK_FRONT_DIM+40,RACK_FLOOR_DIM+20.5]) cube([10,20,9.5]);
+                    translate([RACK_WALL_DIM,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,9.5]);
                     translate([RACK_WALL_DIM+10,RACK_FRONT_DIM,RACK_FLOOR_DIM]) cube([xJ2-RACK_WALL_DIM-60.5,10,psuHeight]);
                     translate([RACK_WALL_DIM+10,RACK_FRONT_DIM,RACK_FLOOR_DIM]) cube([BUFFER+5-10,ATX_PSU_DIMS[1],psuHeight]);
-
+                    translate([RACK_WALL_DIM,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT/2-4.5]) cube([10,9.5,9]);
+                    
+                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM,RACK_FLOOR_DIM]) cube([10,40,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-RACK_FLOOR_DIM]);
+                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,RACK_FLOOR_DIM+20.5]) cube([10,20,9.5]);
+                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,20,9.5]);
+                    translate([RACK_OUTER_WIDTH-RACK_WALL_DIM-10,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT/2-4.5]) cube([10,9.5,9]);
+/*
                     translate([RACK_WALL_DIM+10,RACK_FRONT_DIM+35,RACK_OUTER_HEIGHT/2-5]) rotate([0,-90,0]) board_with_dovetail_tails(
                         board_length=19.75,
                         board_width=board_width,
@@ -703,6 +709,7 @@ module draw_front_panel_section(section=0)
                         tail_count=tail_count,
                         angle=angle
                     );
+*/
                 }
                 draw_front_fasteners($fn=64);
                 draw_left_side_fasteners($fn=64);
@@ -926,14 +933,14 @@ module draw_right_side_fasteners()
 module draw_side_fasteners(xPos,length,headHeight,nutHeight)
 {
     translate([xPos,RACK_FRONT_DIM+55,RACK_OUTER_HEIGHT]) hole_through("M3",l=length,h=headHeight);
-    translate([xPos,RACK_FRONT_DIM+55,RACK_OUTER_HEIGHT-35+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xPos,RACK_FRONT_DIM+55,RACK_OUTER_HEIGHT-36+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
     translate([xPos,RACK_FRONT_DIM+45,RACK_OUTER_HEIGHT]) hole_through("M3",l=length,h=headHeight);
-    translate([xPos,RACK_FRONT_DIM+45,RACK_OUTER_HEIGHT-35+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xPos,RACK_FRONT_DIM+45,RACK_OUTER_HEIGHT-36+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
 
     translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-25,RACK_OUTER_HEIGHT]) hole_through("M3",l=length,h=headHeight);
-    translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-25,RACK_OUTER_HEIGHT-35+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-25,RACK_OUTER_HEIGHT-36+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
     translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-15,RACK_OUTER_HEIGHT]) hole_through("M3",l=length,h=headHeight);
-    translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-15,RACK_OUTER_HEIGHT-35+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-15,RACK_OUTER_HEIGHT-36+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
 
     translate([xPos,RACK_FRONT_DIM+45,RACK_OUTER_HEIGHT/2+15]) hole_through("M3",l=length,h=headHeight);
     translate([xPos,RACK_FRONT_DIM+45,RACK_OUTER_HEIGHT/2-15+nutHeight]) nutcatch_parallel("M3",clk=NPclk);
@@ -947,14 +954,14 @@ module draw_side_fasteners(xPos,length,headHeight,nutHeight)
     translate([xPos,RACK_OUTER_DEPTH/2-20+nutHeight,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-25]) rotate([-90,0,0]) nutcatch_parallel("M3",clk=NPclk);
 
     translate([xPos,RACK_FRONT_DIM+55,0]) rotate([180,0,0]) hole_through("M3",l=length,h=headHeight);
-    translate([xPos,RACK_FRONT_DIM+55,35]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xPos,RACK_FRONT_DIM+55,36]) nutcatch_parallel("M3",clk=NPclk);
     translate([xPos,RACK_FRONT_DIM+45,0]) rotate([180,0,0]) hole_through("M3",l=length,h=headHeight);
-    translate([xPos,RACK_FRONT_DIM+45,35]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xPos,RACK_FRONT_DIM+45,36]) nutcatch_parallel("M3",clk=NPclk);
 
     translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-25,0]) rotate([180,0,0]) hole_through("M3",l=length,h=headHeight);
-    translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-25,35]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-25,36]) nutcatch_parallel("M3",clk=NPclk);
     translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-15,0]) rotate([180,0,0]) hole_through("M3",l=length,h=headHeight);
-    translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-15,35]) nutcatch_parallel("M3",clk=NPclk);
+    translate([xPos,RACK_OUTER_DEPTH-RACK_BACK_DIM-15,36]) nutcatch_parallel("M3",clk=NPclk);
 
     translate([0,RACK_FRONT_DIM+ATX_PSU_DIMS[1]/4*3,RACK_FLOOR_DIM+5]) rotate([0,-90,0]) hole_through("M3",l=length,h=headHeight);
     translate([RACK_WALL_DIM+BUFFER+15-nutHeight,RACK_FRONT_DIM+ATX_PSU_DIMS[1]/4*3,RACK_FLOOR_DIM+5]) rotate([0,-90,0]) nutcatch_parallel("M3",clk=NPclk);
@@ -975,19 +982,21 @@ module draw_side_mounting_points(xPos)
 {
     translate([xPos,0,0])
     {
-        translate([0,RACK_FRONT_DIM+40,RACK_FLOOR_DIM+10]) cube([10,20,10]);
-        translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+10]) cube([10,20,10]);
-        translate([0,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10*2]) cube([10,20,10]);
-        translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10*2]) cube([10,20,10]);
-        translate([0,RACK_FRONT_DIM+40,RACK_OUTER_HEIGHT/2-15]) cube([10,20,30]);
+        translate([0,RACK_FRONT_DIM+40.5,RACK_FLOOR_DIM+10.5]) cube([10,19.5,9.5]);
+        translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_FLOOR_DIM+10.5]) cube([10,19.5,9.5]);
+        translate([0,RACK_FRONT_DIM+40.5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10*2]) cube([10,19.5,9.5]);
+        translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-10*2]) cube([10,19.5,9.5]);
+        translate([0,RACK_FRONT_DIM+50,RACK_OUTER_HEIGHT/2-15]) cube([10,10,30]);
+        translate([0,RACK_FRONT_DIM+40.5,RACK_OUTER_HEIGHT/2-5+10]) cube([10,9.5,10]);
+        translate([0,RACK_FRONT_DIM+40.5,RACK_OUTER_HEIGHT/2-5-10]) cube([10,9.5,10]);
         translate([0,RACK_OUTER_DEPTH/2-60,RACK_OUTER_HEIGHT/2-15]) cube([10,120,30]);
         translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-30,RACK_OUTER_HEIGHT/2-15]) cube([10,10,30]);
-        translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5+10]) cube([10,10,10]);
-        translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5-10]) cube([10,10,10]);
-        translate([0,RACK_OUTER_DEPTH/2-20,RACK_FLOOR_DIM+10]) cube([10,10,20]);
-        translate([0,RACK_OUTER_DEPTH/2+10,RACK_FLOOR_DIM+10]) cube([10,10,20]);
-        translate([0,RACK_OUTER_DEPTH/2-20,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,10,20]);
-        translate([0,RACK_OUTER_DEPTH/2+10,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,10,20]);
+        translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5+10]) cube([10,9.5,10]);
+        translate([0,RACK_OUTER_DEPTH-RACK_BACK_DIM-20,RACK_OUTER_HEIGHT/2-5-10]) cube([10,9.5,10]);
+        translate([0,RACK_OUTER_DEPTH/2-20,RACK_FLOOR_DIM+10.5]) cube([10,9.5,19.5]);
+        translate([0,RACK_OUTER_DEPTH/2+10.5,RACK_FLOOR_DIM+10.5]) cube([10,9.5,19.5]);
+        translate([0,RACK_OUTER_DEPTH/2-20,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,9.5,19.5]);
+        translate([0,RACK_OUTER_DEPTH/2+10.5,RACK_OUTER_HEIGHT-RACK_ROOF_DIM-30]) cube([10,9.5,19.5]);
     }
 }
 
@@ -1104,6 +1113,8 @@ module draw_rack_ear()
     difference()
     {
         cube(RACK_EAR_SIZE);
+        translate([-EPSILON, RACK_FRONT_DIM, 0]) cube([0.5+EPSILON, RACK_EAR_SIZE[1]-RACK_FRONT_DIM+EPSILON, RACK_EAR_SIZE[2]]);
+        translate([RACK_EAR_SIZE[0]-0.5, RACK_FRONT_DIM+EPSILON, 0]) cube([0.5+EPSILON, RACK_EAR_SIZE[1]-RACK_FRONT_DIM+EPSILON, RACK_EAR_SIZE[2]]);
         for (i = [0 : 2])
         {
             z = i * RACK_EAR_HOLE_SPACING + RACK_EAR_HOLE_OFFSET;
