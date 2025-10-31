@@ -2,8 +2,6 @@
 FAN_MOUNTING_HOLE_DIAMETER = 4.3;
 FAN_DEPTH = 25;
 
-draw_fan_mounting_holes_offset(120,20);
-
 // TODO: support other fan sizes and depths
 function get_fan_spacing(size) =
     (size == 140) ?
